@@ -1,6 +1,6 @@
 import {Button} from '@/common/Styled';
 import withVisualizeRender from '@/lib/RenderVisualizer';
-import useSelector from '@/lib/useSelector';
+import useSelector from '@/lib/UseSelector';
 import {TestActions} from '@/modules/TestModule';
 import React from 'react';
 import {useDispatch} from 'react-redux';
