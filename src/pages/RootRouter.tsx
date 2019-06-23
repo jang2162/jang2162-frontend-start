@@ -8,9 +8,10 @@ const RootRouter = () => {
     return (
         <Router>
             <Switch>
+                <Route path="/test" component={TestPage}/>
+
                 <Route path="/" exact component={HomePage}/>
                 <Route path="/" component={DefaultPage}/>
-                <Route path="/test" component={TestPage}/>
             </Switch>
         </Router>
     )
