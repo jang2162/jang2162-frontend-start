@@ -1,5 +1,4 @@
 import {Button} from '@/common/Styled';
-import withVisualizeRender from '@/lib/RenderVisualizer';
 import useSelector from '@/lib/UseSelector';
 import {TestActions} from '@/modules/TestModule';
 import React from 'react';
@@ -9,7 +8,6 @@ const Test = (props: {test: string}) => {
     const name = useSelector(state => state.test.name);
     const value = useSelector(state => state.test.counter.value);
     const dispatch = useDispatch();
-
     const click = () => dispatch(TestActions.changeNameAndDelayedAdd({addNum: 5, name: 'NEW TEST'}));
     return (
         <div style={{padding: 20}}>
@@ -20,4 +18,4 @@ const Test = (props: {test: string}) => {
         </div>
     )
 };
-export default withVisualizeRender(Test);
+export default Test;

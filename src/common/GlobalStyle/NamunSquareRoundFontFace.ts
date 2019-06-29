@@ -1,21 +1,21 @@
 import {css} from 'styled-components';
 
-import NanumSquareRoundBEot from '@/assets/fonts/NanumSquareRound/NanumSquareRoundB.eot';
-import NanumSquareRoundBTtf from '@/assets/fonts/NanumSquareRound/NanumSquareRoundB.ttf';
-import NanumSquareRoundBWoff from '@/assets/fonts/NanumSquareRound/NanumSquareRoundB.woff';
-import NanumSquareRoundBWoff2 from '@/assets/fonts/NanumSquareRound/NanumSquareRoundB.woff2';
-import NanumSquareRoundEBEot from '@/assets/fonts/NanumSquareRound/NanumSquareRoundEB.eot';
-import NanumSquareRoundEBTtf from '@/assets/fonts/NanumSquareRound/NanumSquareRoundEB.ttf';
-import NanumSquareRoundEBWoff from '@/assets/fonts/NanumSquareRound/NanumSquareRoundEB.woff';
-import NanumSquareRoundEBWoff2 from '@/assets/fonts/NanumSquareRound/NanumSquareRoundEB.woff2';
-import NanumSquareRoundLEot from '@/assets/fonts/NanumSquareRound/NanumSquareRoundL.eot';
-import NanumSquareRoundLTtf from '@/assets/fonts/NanumSquareRound/NanumSquareRoundL.ttf';
-import NanumSquareRoundLWoff from '@/assets/fonts/NanumSquareRound/NanumSquareRoundL.woff';
-import NanumSquareRoundLWoff2 from '@/assets/fonts/NanumSquareRound/NanumSquareRoundL.woff2';
-import NanumSquareRoundREot from '@/assets/fonts/NanumSquareRound/NanumSquareRoundR.eot';
-import NanumSquareRoundRTtf from '@/assets/fonts/NanumSquareRound/NanumSquareRoundR.ttf';
-import NanumSquareRoundRWoff from '@/assets/fonts/NanumSquareRound/NanumSquareRoundR.woff';
-import NanumSquareRoundRWoff2 from '@/assets/fonts/NanumSquareRound/NanumSquareRoundR.woff2';
+import NanumSquareRoundBEot from '@r/fonts/NanumSquareRound/NanumSquareRoundB.eot';
+import NanumSquareRoundBTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundB.ttf';
+import NanumSquareRoundBWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundB.woff';
+import NanumSquareRoundBWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundB.woff2';
+import NanumSquareRoundEBEot from '@r/fonts/NanumSquareRound/NanumSquareRoundEB.eot';
+import NanumSquareRoundEBTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundEB.ttf';
+import NanumSquareRoundEBWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundEB.woff';
+import NanumSquareRoundEBWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundEB.woff2';
+import NanumSquareRoundLEot from '@r/fonts/NanumSquareRound/NanumSquareRoundL.eot';
+import NanumSquareRoundLTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundL.ttf';
+import NanumSquareRoundLWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundL.woff';
+import NanumSquareRoundLWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundL.woff2';
+import NanumSquareRoundREot from '@r/fonts/NanumSquareRound/NanumSquareRoundR.eot';
+import NanumSquareRoundRTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundR.ttf';
+import NanumSquareRoundRWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff';
+import NanumSquareRoundRWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff2';
 
 export default css`
 @font-face {

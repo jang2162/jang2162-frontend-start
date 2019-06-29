@@ -1,21 +1,21 @@
 import {css} from 'styled-components';
 
-import NanumSquareBEot from '@/assets/fonts/NanumSquare/NanumSquareB.eot';
-import NanumSquareBTtf from '@/assets/fonts/NanumSquare/NanumSquareB.ttf';
-import NanumSquareBWoff from '@/assets/fonts/NanumSquare/NanumSquareB.woff';
-import NanumSquareBWoff2 from '@/assets/fonts/NanumSquare/NanumSquareB.woff2';
-import NanumSquareEBEot from '@/assets/fonts/NanumSquare/NanumSquareEB.eot';
-import NanumSquareEBTtf from '@/assets/fonts/NanumSquare/NanumSquareEB.ttf';
-import NanumSquareEBWoff from '@/assets/fonts/NanumSquare/NanumSquareEB.woff';
-import NanumSquareEBWoff2 from '@/assets/fonts/NanumSquare/NanumSquareEB.woff2';
-import NanumSquareLEot from '@/assets/fonts/NanumSquare/NanumSquareL.eot';
-import NanumSquareLTtf from '@/assets/fonts/NanumSquare/NanumSquareL.ttf';
-import NanumSquareLWoff from '@/assets/fonts/NanumSquare/NanumSquareL.woff';
-import NanumSquareLWoff2 from '@/assets/fonts/NanumSquare/NanumSquareL.woff2';
-import NanumSquareREot from '@/assets/fonts/NanumSquare/NanumSquareR.eot';
-import NanumSquareRTtf from '@/assets/fonts/NanumSquare/NanumSquareR.ttf';
-import NanumSquareRWoff from '@/assets/fonts/NanumSquare/NanumSquareR.woff';
-import NanumSquareRWoff2 from '@/assets/fonts/NanumSquare/NanumSquareR.woff2';
+import NanumSquareBEot from '@r/fonts/NanumSquare/NanumSquareB.eot';
+import NanumSquareBTtf from '@r/fonts/NanumSquare/NanumSquareB.ttf';
+import NanumSquareBWoff from '@r/fonts/NanumSquare/NanumSquareB.woff';
+import NanumSquareBWoff2 from '@r/fonts/NanumSquare/NanumSquareB.woff2';
+import NanumSquareEBEot from '@r/fonts/NanumSquare/NanumSquareEB.eot';
+import NanumSquareEBTtf from '@r/fonts/NanumSquare/NanumSquareEB.ttf';
+import NanumSquareEBWoff from '@r/fonts/NanumSquare/NanumSquareEB.woff';
+import NanumSquareEBWoff2 from '@r/fonts/NanumSquare/NanumSquareEB.woff2';
+import NanumSquareLEot from '@r/fonts/NanumSquare/NanumSquareL.eot';
+import NanumSquareLTtf from '@r/fonts/NanumSquare/NanumSquareL.ttf';
+import NanumSquareLWoff from '@r/fonts/NanumSquare/NanumSquareL.woff';
+import NanumSquareLWoff2 from '@r/fonts/NanumSquare/NanumSquareL.woff2';
+import NanumSquareREot from '@r/fonts/NanumSquare/NanumSquareR.eot';
+import NanumSquareRTtf from '@r/fonts/NanumSquare/NanumSquareR.ttf';
+import NanumSquareRWoff from '@r/fonts/NanumSquare/NanumSquareR.woff';
+import NanumSquareRWoff2 from '@r/fonts/NanumSquare/NanumSquareR.woff2';
 
 export default css`
 @font-face {

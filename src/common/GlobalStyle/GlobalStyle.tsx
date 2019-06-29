@@ -5,9 +5,10 @@ import NamunSquareRoundFontFace from './NamunSquareRoundFontFace';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
+    
     ${NamunSquareFontFace}
     ${NamunSquareRoundFontFace}
-
+    
     * {
         font-family: NanumSquareRound NanumSquare !important;
     }
