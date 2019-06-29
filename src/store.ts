@@ -39,9 +39,3 @@ const hotReloadingEpic: any = (action$: any, ...rest: any) =>
         )
     );
 epicMiddleware.run(hotReloadingEpic);
-// if (module.hot) {
-//     module.hot.accept('./', () => {
-//         store.dispatch({type: 'EPIC_END'});
-//         epic$.next(rootEpic);
-//     });
-// }
