@@ -1,5 +1,5 @@
 {
-  "name": "react-start",
+  "name": "my-singer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -59,8 +59,6 @@
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-styled-components": "^1.10.0",
     "cross-env": "^5.2.0",
-    "customize-cra": "^0.2.12",
-    "react-app-rewired": "^2.1.1",
     "react-global-render-visualizer": "^0.1.1",
     "react-scripts": "3.0.0",
     "redux-devtools-extension": "^2.13.8",
