@@ -3,7 +3,6 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {combineEpics, createEpicMiddleware, ofType} from 'redux-observable';
 import {BehaviorSubject} from 'rxjs';
 import {mergeMap, takeUntil} from 'rxjs/operators';
-console.log(444);
 import test, {TestEpics, TestState} from './modules/TestModule';
 
 export interface RootState {
