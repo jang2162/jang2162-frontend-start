@@ -1,8 +1,6 @@
-import {Link} from '@/routes';
+import {Link} from '@/lib/Router';
 import Head from 'next/head';
 import * as React from 'react';
-
-
 
 export default () => {
 
@@ -15,7 +13,12 @@ export default () => {
 
             <Link route={'/test'}>
                 <a>Goto Test</a>
-            </Link>
+            </Link> <br/><br/>
+
+            <Link route={'/test/444'}>
+                <a>Goto Test 2</a>
+            </Link> <br/><br/>
+
         </div>
     )
 }

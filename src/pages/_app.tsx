@@ -4,20 +4,36 @@ import App, {Container, NextAppContext} from 'next/app'
 import Head from 'next/head';
 import React from 'react'
 import {Provider} from 'react-redux';
+import Layout from '../Layout';
+import routeInfoList from '../routes';
+import Error from './_error';
+
 
 export default class extends App {
     static async getInitialProps ({ Component, ctx }: NextAppContext) {
-        let pageProps = {}
-
+        let pageProps = {};
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx)
         }
 
-        return { pageProps }
+        let routeInfo = null;
+        for (const info of routeInfoList) {
+            if (info.match(ctx.asPath)) {
+                routeInfo = info;
+                break;
+            }
+        }
+
+        return {
+            pageProps: {
+                ...pageProps,
+                routeInfo
+            },
+        }
     }
 
     render () {
-        const { Component, pageProps } = this.props;
+        const { Component, pageProps} = this.props;
         return (
             <Container>
                 <Head>
@@ -27,7 +43,13 @@ export default class extends App {
                 </Head>
                 <GlobalStyle/>
                 <Provider store={store}>
-                    <Component {...pageProps} />
+                    <Layout pageProps={pageProps}>
+                        {
+                            pageProps.routeInfo !== null ?
+                            <Component {...pageProps} /> :
+                            <Error statusCode={404}/>
+                        }
+                    </Layout>
                 </Provider>
             </Container>
         )

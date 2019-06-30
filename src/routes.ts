@@ -1,12 +1,13 @@
-import Routes from 'next-routes';
+import {infoToList} from './lib/RouteInfo';
 
-const routes =  new Routes();
 
-export const Link = routes.Link;
-export const Router = routes.Router;
-export const prefetchRoute = Router.prefetchRoute;
-export const pushRoute = Router.pushRoute;
-export const replaceRoute = Router.replaceRoute;
-
-export default routes;
-
+export default infoToList({
+    index: {
+        pattern: ['/', '/index']
+    },
+    test: {
+        pattern: '/test/:id',
+        layout: 'NewLayout',
+        param: {aa: 22}
+    }
+});

@@ -3,12 +3,12 @@ import {readFileSync} from 'fs';
 import next from 'next';
 import * as spdy from 'spdy';
 import conf from '../next.config';
-import route from './routes';
+import {getRequestHandler} from './lib/Router';
 
 const dev = process.env.NODE_ENV !== 'production';
-
 const app = next({conf, dev, dir: './src'});
-const handler = route.getRequestHandler(app);
+const handler = getRequestHandler(app);
+
 const server = express()
     .use(handler)
     .get('*.*', express.static('public'));
