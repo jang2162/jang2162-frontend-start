@@ -3,9 +3,10 @@ import {readFileSync} from 'fs';
 import next from 'next';
 import * as spdy from 'spdy';
 import conf from '../next.config';
+import env from './lib/Env';
 import {getRequestHandler} from './lib/Router';
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = !env.getBool('production', false);
 const app = next({conf, dev, dir: './src'});
 const handler = getRequestHandler(app);
 
@@ -21,10 +22,10 @@ const server = express()
         process.exit(1);
     }
 
-    const keyPath = 'cert/self.key';
-    const certPath = 'cert/self.crt';
-    const port= 8000;
-    const host = '0.0.0.0';
+    const certPath = env.getString('cert.cert', 'cert/self.crt');
+    const keyPath = env.getString('cert.key', 'cert/self.key');
+    const host = env.getString('host', '127.0.0.1');
+    const port= env.getNumber('port', 8000);
 
     spdy.createServer({
         key: readFileSync(keyPath),

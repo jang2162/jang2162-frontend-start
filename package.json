@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/clone": "^0.1.30",
+    "clone": "^2.1.2",
     "express": "^4.17.1",
     "gsap": "^2.1.2",
     "immer-reducer": "^0.6.0",
@@ -31,7 +33,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build src",
-    "start": "cross-env NODE_ENV=production ts-node --project tsconfig.server.json src/server.ts"
+    "start": "cross-env ENV_PATH=./env/prod.json nodemon"
   },
   "eslintConfig": {
     "extends": "react-app"

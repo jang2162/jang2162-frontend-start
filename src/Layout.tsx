@@ -12,10 +12,7 @@ export default (props: PropsWithChildren<LayoutProps>) => {
         const info = props.pageProps.routeInfo;
         layout = info.layout || 'default';
         param = info.param || {};
-        console.log(info);
     }
-
-    console.log(layout);
 
     return (
         <>
