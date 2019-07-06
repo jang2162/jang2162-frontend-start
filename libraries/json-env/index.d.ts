@@ -1,6 +1,3 @@
-export interface EnvI {
-    [k: string]: any;
-}
 export declare function get(key?: string, defaultValue?: any): any;
 export declare function getBool(key: string, defaultValue?: boolean): boolean;
 export declare function getNumber(key: string, defaultValue?: number): number;

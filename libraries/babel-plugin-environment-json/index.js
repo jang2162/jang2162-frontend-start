@@ -1,6 +1,5 @@
 const jsonEnv = require('json-env');
 
-
 module.exports = ({ types: t } /*: { types: Types } */) => {
     return {
         visitor: {

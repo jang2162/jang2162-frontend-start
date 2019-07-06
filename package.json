@@ -32,7 +32,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_PATH=libraries nodemon",
-    "build": "cross-env NODE_PATH=libraries next build src",
+    "build": "cross-env NODE_PATH=libraries ENV_PATH=./environments/prod.json next build",
     "start": "cross-env NODE_PATH=libraries ENV_PATH=./environments/prod.json nodemon"
   },
   "eslintConfig": {
