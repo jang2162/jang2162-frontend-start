@@ -249,3 +249,5 @@ $RECYCLE.BIN/
 /logs
 
 # End of https://www.gitignore.io/api/node,macos,windows,intellij,visualstudiocode
+
+/environments/*.json

@@ -1,13 +1,14 @@
 import express from 'express';
 import {readFileSync} from 'fs';
+import env from 'json-env';
 import next from 'next';
 import * as spdy from 'spdy';
 import conf from '../next.config';
-import env from './lib/Env';
 import {getRequestHandler} from './lib/Router';
 
+
 const dev = !env.getBool('production', false);
-const app = next({conf, dev, dir: './src'});
+const app = next({conf, dev});
 const handler = getRequestHandler(app);
 
 const server = express()

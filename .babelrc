@@ -1,7 +1,7 @@
 {
   "presets": [
-    "@babel/preset-typescript",
-    "next/babel"
+    "next/babel",
+    "@zeit/next-typescript/babel"
   ],
   "plugins": [
     [
@@ -16,6 +16,17 @@
     ]
   ],
   "env": {
+    "development": {
+      "plugins": [
+        ["styled-components", {
+          "displayName": true,
+          "fileName": true,
+          "minify": false,
+          "ssr": true
+        }],
+        ["./libraries/babel-plugin-environment-json"]
+      ]
+    },
     "production": {
       "plugins": [
         ["styled-components", {
@@ -24,17 +35,8 @@
           "minify": true,
           "ssr": true
         }],
-        ["polished"]
-      ]
-    },
-    "development": {
-      "plugins": [
-        ["styled-components", {
-          "displayName": true,
-          "fileName": true,
-          "minify": false,
-          "ssr": true
-        }]
+        ["polished"],
+        ["./libraries/babel-plugin-environment-json"]
       ]
     }
   }

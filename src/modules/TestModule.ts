@@ -1,10 +1,10 @@
-import {createActionCreators, createReducerFunction, ImmerReducer} from '@/lib/ImmerReducer';
-import {Epic} from '@/lib/SimpleEpic';
 import {RootState} from '@/store';
+import {createActionCreators, createReducerFunction, ImmerReducer} from 'my-immer-reducer';
 import {ofType} from 'redux-observable';
 import {concat, of} from 'rxjs';
 import {delay, flatMap} from 'rxjs/operators';
-// setPrefix('MY_APP');
+import {SimpleEpic} from 'simple-epic';
+
 export interface TestState {
     name: string;
     counter: {
@@ -37,7 +37,7 @@ class TestReducer extends ImmerReducer<TestState> {
 export const TestActions = createActionCreators(TestReducer);
 export default createReducerFunction(TestReducer, initialState);
 
-const changeNameAndDelayedAddEpic: Epic<typeof TestActions.changeNameAndDelayedAdd, RootState> = (action$, state$) =>
+const changeNameAndDelayedAddEpic: SimpleEpic<typeof TestActions.changeNameAndDelayedAdd, RootState> = (action$, state$) =>
     action$.pipe(
         ofType(TestActions.changeNameAndDelayedAdd.type),
         flatMap(action =>

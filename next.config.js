@@ -2,7 +2,6 @@ const withTypescript = require('@zeit/next-typescript')
 const path = require('path')
 
 module.exports = withTypescript({
-    distDir: '../.next',
     webpack (config, options) {
         const { module = {}, resolve = {} } = config;
         return {

@@ -31,9 +31,9 @@
     "typescript": "3.5.2"
   },
   "scripts": {
-    "dev": "nodemon",
-    "build": "next build src",
-    "start": "cross-env ENV_PATH=./env/prod.json nodemon"
+    "dev": "cross-env NODE_PATH=libraries nodemon",
+    "build": "cross-env NODE_PATH=libraries next build src",
+    "start": "cross-env NODE_PATH=libraries ENV_PATH=./environments/prod.json nodemon"
   },
   "eslintConfig": {
     "extends": "react-app"

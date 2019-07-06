@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "*": ["libraries/*"],
+      "@/*": ["src/*"],
+      "@r/*": ["resources/*"]
     },
     "target": "esnext",
     "module": "esnext",
@@ -28,7 +30,7 @@
     "sourceMap": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./@types"
+      "./libraries/@types"
     ]
   },
   "exclude": ["dist", ".next", "next.config.js"]

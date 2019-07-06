@@ -1,4 +1,4 @@
-import {infoToList} from './lib/RouteInfo';
+import {infoToList} from 'route-info';
 
 
 export default infoToList({

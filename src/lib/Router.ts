@@ -5,6 +5,7 @@ import routeInfo from '../routes';
 const routeInfoList = [];
 const routes =  new Routes();
 
+
 for(const i in routeInfo) {
     const info = routeInfo[i];
 

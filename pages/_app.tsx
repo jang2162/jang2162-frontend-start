@@ -1,13 +1,12 @@
 import GlobalStyle from '@/common/GlobalStyle/GlobalStyle';
+import Layout from '@/Layout';
+import routeInfoList from '@/routes';
 import {store} from '@/store';
 import App, {Container, NextAppContext} from 'next/app'
 import Head from 'next/head';
 import React from 'react'
 import {Provider} from 'react-redux';
-import Layout from '../Layout';
-import routeInfoList from '../routes';
 import Error from './_error';
-
 
 export default class extends App {
     static async getInitialProps ({ Component, ctx }: NextAppContext) {
