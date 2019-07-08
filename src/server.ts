@@ -9,9 +9,7 @@ const dev = !env.getBool('production', false);
 const app = next({conf, dev});
 const handler = getRequestHandler(app);
 
-const server = express()
-    .use(handler)
-    .get('*.*', express.static('public'));
+const server = express().use(handler);
 
 (async () => {
     try {
@@ -25,7 +23,7 @@ const server = express()
     const port= env.getNumber('port', 8000);
 
     server.listen(port, host, () => {
-        console.log(`listening on https://${host==='0.0.0.0' ? '127.0.0.1' : host}:${port}`);
+        console.log(`listening on http://${host==='0.0.0.0' ? '127.0.0.1' : host}:${port}`);
     });
 })();
 
