@@ -1,13 +1,9 @@
-import {infoToList} from 'route-info';
+import nextRouteBuilder from 'next-route-util';
+import routeInfo from '../routes.json'
+
+const {
+    Link, prefetchRoute, pushRoute, replaceRoute, Router, routeInfoList
+} = nextRouteBuilder(routeInfo);
 
 
-export default infoToList({
-    index: {
-        pattern: ['/', '/index']
-    },
-    test: {
-        pattern: '/test/:id',
-        layout: 'NewLayout',
-        param: {aa: 22}
-    }
-});
+export {Link, prefetchRoute, pushRoute, replaceRoute, Router, routeInfoList};

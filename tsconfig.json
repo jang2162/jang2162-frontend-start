@@ -3,12 +3,19 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "*": ["libraries/*"],
-      "@/*": ["src/*"],
-      "@r/*": ["resources/*"]
+      "*": [
+        "node_modules/*",
+        "libraries/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+      "@r/*": [
+        "resources/*"
+      ]
     },
-    "target": "esnext",
     "module": "esnext",
+    "target": "esnext",
     "jsx": "preserve",
     "lib": [
       "dom",
@@ -26,12 +33,22 @@
     "noUnusedParameters": false,
     "isolatedModules": true,
     "removeComments": false,
+    "resolveJsonModule": true,
     "preserveConstEnums": true,
     "sourceMap": true,
     "typeRoots": [
       "./node_modules/@types",
       "./libraries/@types"
-    ]
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   },
-  "exclude": ["dist", ".next", "next.config.js"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

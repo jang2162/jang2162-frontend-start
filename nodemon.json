@@ -1,8 +1,0 @@
-{
-  "watch": [
-    "/text.config.js",
-    "/src/routes.ts",
-    "/src/server.ts"
-  ],
-  "exec": "ts-node --project tsconfig.server.json src/server.ts"
-}

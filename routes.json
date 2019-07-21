@@ -1,0 +1,11 @@
+{
+    "index": {
+        "pattern": ["/", "/index"]
+    },
+
+    "test": {
+        "pattern": "/test/:id",
+        "layout": "NewLayout",
+        "param": {"aa": 22}
+    }
+}

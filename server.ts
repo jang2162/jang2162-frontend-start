@@ -1,15 +1,18 @@
 import express from 'express';
-import env from 'json-env';
+import {readFileSync} from 'fs';
 import next from 'next';
-import conf from '../next.config';
-import {getRequestHandler} from './lib/Router';
-
+import env from './libraries/json-env';
+import nextRouteBuilder from './libraries/next-route-util';
+import conf from './next.config.js';
 
 const dev = !env.getBool('production', false);
 const app = next({conf, dev});
-const handler = getRequestHandler(app);
 
-const server = express().use(handler);
+const {routes} = nextRouteBuilder(JSON.parse(readFileSync('./routes.json', 'utf8')));
+
+const server = express()
+    .use(routes.getRequestHandler(app))
+    .get('*.*', express.static('public'));
 
 (async () => {
     try {
@@ -26,5 +29,6 @@ const server = express().use(handler);
         console.log(`listening on http://${host==='0.0.0.0' ? '127.0.0.1' : host}:${port}`);
     });
 })();
+
 
 

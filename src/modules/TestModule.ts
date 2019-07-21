@@ -1,6 +1,6 @@
+import {createActionCreators, createReducerFunction, ImmerReducer} from '@/lib/MyImmerReducer';
 import {RootState} from '@/store';
-import {createActionCreators, createReducerFunction, ImmerReducer} from 'my-immer-reducer';
-import {ofType} from 'redux-observable';
+import {Epic, ofType} from 'redux-observable';
 import {concat, of} from 'rxjs';
 import {delay, flatMap} from 'rxjs/operators';
 import {SimpleEpic} from 'simple-epic';

@@ -247,6 +247,7 @@ $RECYCLE.BIN/
 .env.production.local
 
 /logs
+/dist
 
 # End of https://www.gitignore.io/api/node,macos,windows,intellij,visualstudiocode
 

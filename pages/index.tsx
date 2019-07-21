@@ -1,4 +1,4 @@
-import {Link} from '@/lib/Router';
+import {Link} from '@/routes';
 import Head from 'next/head';
 import * as React from 'react';
 

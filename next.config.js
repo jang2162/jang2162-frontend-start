@@ -1,7 +1,6 @@
-const withTypescript = require('@zeit/next-typescript')
 const path = require('path')
 
-module.exports = withTypescript({
+module.exports = {
     webpack (config, options) {
         const { module = {}, resolve = {} } = config;
         return {
@@ -31,4 +30,4 @@ module.exports = withTypescript({
             }
         }
     }
-})
+}

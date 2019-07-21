@@ -1,7 +1,6 @@
 {
   "presets": [
-    "next/babel",
-    "@zeit/next-typescript/babel"
+    "next/babel"
   ],
   "plugins": [
     [
@@ -13,7 +12,8 @@
           "@r": "./resources"
         }
       }
-    ]
+    ],
+    ["./libraries/json-env/babel-plugin"]
   ],
   "env": {
     "development": {
@@ -23,8 +23,8 @@
           "fileName": true,
           "minify": false,
           "ssr": true
-        }],
-        ["./libraries/babel-plugin-environment-json"]
+        }]
+
       ]
     },
     "production": {
@@ -35,8 +35,7 @@
           "minify": true,
           "ssr": true
         }],
-        ["polished"],
-        ["./libraries/babel-plugin-environment-json"]
+        ["polished"]
       ]
     }
   }

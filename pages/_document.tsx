@@ -1,12 +1,11 @@
-import Document, {Head, Main, NextDocumentContext, NextScript} from 'next/document';
+import Document, {DocumentContext, Head, Main, NextScript} from 'next/document';
 import * as React from 'react'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class extends Document {
-    static async getInitialProps(ctx: NextDocumentContext) {
+    static async getInitialProps(ctx: DocumentContext) {
         const sheet = new ServerStyleSheet();
         const originalRenderPage = ctx.renderPage;
-
         try {
             ctx.renderPage = () =>
                 originalRenderPage({
@@ -16,6 +15,7 @@ export default class extends Document {
             const initialProps = await Document.getInitialProps(ctx);
             return {
                 ...initialProps,
+                path: ctx.asPath,
                 styles: (
                     <>
                         {initialProps.styles}
@@ -27,6 +27,7 @@ export default class extends Document {
             sheet.seal()
         }
     }
+
 
     render() {
         return (

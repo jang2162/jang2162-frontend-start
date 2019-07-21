@@ -5,20 +5,8 @@ export interface EnvI {
     [k: string]: any
 }
 
-let envData: EnvI = JSON.parse(readFileSync(process.env.ENV_PATH || './env/dev.json', 'utf8').toString());
+const envData: EnvI = JSON.parse(readFileSync(process.env.ENV_PATH || './environments/dev.json', 'utf8').toString());
 function get(key?: string, defaultValue?: any): any {
-    if (!envData) {
-        envData = {
-            'production': false,
-            'host': '0.0.0.0',
-            'port': 8000,
-            'cert': {
-                'cert': 'cert/self.crt',
-                'key': 'cert/self.key'
-            }
-        };
-    }
-
     if (!key) { return envData; }
 
     const keyArr = key.split('.');
