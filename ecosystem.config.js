@@ -2,7 +2,7 @@ module.exports = {
   apps : [{
     name: '_NEXT',
     cwd: __dirname,
-    script: "dist/server.js",
+    script: "dist/index.js",
     instances: 4,
     exec_mode: "cluster",
     watch: false,
