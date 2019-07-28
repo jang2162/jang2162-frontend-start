@@ -7,5 +7,5 @@
     "outDir": "dist",
     "noEmit": false
   },
-  "include": ["server.ts", "libraries"]
+  "include": ["index.ts", "libraries"]
 }
