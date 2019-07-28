@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name: 'NEXT',
+    name: '_NEXT',
     cwd: __dirname,
     script: "dist/server.js",
     instances: 4,
