@@ -3,7 +3,6 @@
     "libraries",
     "environments",
     "index.ts",
-    "nodemon.json",
     "routes.json"
   ],
   "env": {
