@@ -1,9 +1,9 @@
 {
   "watch": [
-    "index.ts",
-    "nodemon.json",
     "libraries",
     "environments",
+    "index.ts",
+    "nodemon.json",
     "routes.json"
   ],
   "env": {
