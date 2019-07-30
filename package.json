@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "clone": "^2.1.2",
+    "cross-env": "^5.2.0",
     "express": "^4.17.1",
     "gsap": "^2.1.2",
     "immer-reducer": "^0.6.0",
