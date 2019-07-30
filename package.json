@@ -27,7 +27,7 @@
     "styled-reset": "^2.0.0"
   },
   "scripts": {
-    "dev": "tsc -p tsconfig.server.json && cross-env NODE_PATH=libraries node dist/index.js",
+    "dev": "nodemon",
     "build": "tsc -p tsconfig.server.json && cross-env NODE_PATH=libraries ENV_PATH=./environments/prod.json next build",
     "start": "npm run build && pm2 start ecosystem.config.js",
     "restart": "npm run build && pm2 restart ecosystem.config.js",
@@ -60,9 +60,11 @@
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-styled-components": "^1.10.0",
     "cross-env": "^5.2.0",
+    "nodemon": "^1.19.1",
     "react-global-render-visualizer": "^0.1.1",
     "react-scripts": "3.0.0",
     "redux-devtools-extension": "^2.13.8",
+    "ts-node": "^8.3.0",
     "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",

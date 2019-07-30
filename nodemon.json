@@ -1,0 +1,15 @@
+{
+  "watch": [
+    "index.ts",
+    "nodemon.json",
+    "libraries",
+    "environments/",
+    "routes.json"
+  ],
+  "env": {
+    "NODE_ENV": "development",
+    "NODE_PATH": "libraries",
+    "ENV_PATH":  "./environments/dev.json"
+  },
+  "exec": "ts-node --project tsconfig.server.json index.ts"
+}
