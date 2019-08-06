@@ -10,5 +10,6 @@
     "NODE_PATH": "libraries",
     "ENV_PATH":  "./environments/dev.json"
   },
+  "ext": "*",
   "exec": "ts-node --project tsconfig.server.json index.ts"
 }
