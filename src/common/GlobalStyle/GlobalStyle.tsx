@@ -1,13 +1,13 @@
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
-import NamunSquareFontFace from './NamunSquareFontFace';
-import NamunSquareRoundFontFace from './NamunSquareRoundFontFace';
+import NanumSquareFontFace from './NanumSquareFontFace';
+import NanumSquareRoundFontFace from './NanumSquareRoundFontFace';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
     
-    ${NamunSquareFontFace}
-    ${NamunSquareRoundFontFace}
+    ${NanumSquareFontFace}
+    ${NanumSquareRoundFontFace}
     
     * {
         font-family: NanumSquareRound NanumSquare !important;
