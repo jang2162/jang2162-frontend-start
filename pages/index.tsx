@@ -1,22 +1,19 @@
-import {Link} from '@/routes';
 import Head from 'next/head';
+import Link from 'next/link'
 import * as React from 'react';
 
-export default () => {
 
+
+export default (props: any) => {
     return (
         <div>
             <Head>
-                <title>INDEX</title>
+                <title>INDEX2</title>
             </Head>
             <div>Index Page</div>
 
-            <Link route={'/test'}>
+            <Link href="/test">
                 <a>Goto Test</a>
-            </Link> <br/><br/>
-
-            <Link route={'/test/444'}>
-                <a>Goto Test 2</a>
             </Link> <br/><br/>
 
         </div>

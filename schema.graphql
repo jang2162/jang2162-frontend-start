@@ -1,0 +1,142 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    addSampleUser(user: SampleUserInput!): SampleUser
+    addUser(user: UserInput!): User!
+    authentication(id: String!, pw: String!): authToken!
+    invalidate: String
+    refreshToken(refreshToken: String!): accessToken!
+}
+
+type PageInfo {
+    direction: DIRECTION_TYPE!
+    hasNext: Boolean!
+    hasPrev: Boolean!
+    next: String
+    prev: String
+    sort: SORT_TYPE!
+    sortBy: String!
+    totalCount: Int!
+}
+
+type Query {
+    samplePostById(id: ID!): SamplePost
+    samplePosts(form: SamplePostForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, searchKeyword : "", userId : ""}): SamplePostConnection!
+    sampleUserById(id: ID!): SampleUser
+    sampleUsers(form: SampleUserForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, name : ""}): SampleUserConnection!
+    userById(id: ID!): User
+    users(form: UserForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, name : ""}): UserConnection!
+}
+
+type SamplePost {
+    content: String
+    id: ID!
+    subject: String!
+    writer: SampleUser!
+    writer_id: ID!
+}
+
+type SamplePostConnection {
+    list: [SamplePost!]!
+    pageInfo: PageInfo!
+}
+
+type SampleUser {
+    birthday: Date
+    id: ID!
+    name: String!
+    posts(page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}): SamplePostConnection
+}
+
+type SampleUserConnection {
+    list: [SampleUser!]
+    pageInfo: PageInfo!
+}
+
+type User {
+    birthday: Date
+    createDate: Date!
+    id: ID!
+    loginId: String!
+    name: String!
+}
+
+type UserConnection {
+    list: [User!]
+    pageInfo: PageInfo!
+}
+
+type accessToken {
+    token: String!
+}
+
+type authToken {
+    accessToken: String!
+    refreshToken: String!
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+enum DIRECTION_TYPE {
+    NEXT
+    PREV
+}
+
+enum SORT_TYPE {
+    ASC
+    DESC
+}
+
+input PageInput {
+    cursor: String = ""
+    direction: DIRECTION_TYPE = NEXT
+    size: Int = 15
+    sort: SORT_TYPE = DESC
+    sortBy: String = "ID"
+}
+
+input SamplePostForm {
+    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
+    searchKeyword: String = ""
+    userId: String = ""
+}
+
+input SampleUserForm {
+    name: String = ""
+    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
+}
+
+input SampleUserInput {
+    birthday: Date
+    name: String!
+}
+
+input UserForm {
+    name: String = ""
+    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
+}
+
+input UserInput {
+    birthday: Date
+    loginId: String!
+    name: String!
+    password: String!
+}
+
+
+"Date scalar type"
+scalar Date
+
+"DateTime scalar type"
+scalar DateTime
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

@@ -2,7 +2,18 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "paths": {},
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "libraries/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+      "@r/*": [
+        "resources/*"
+      ]
+    },
     "target": "es6",
     "outDir": "dist",
     "noEmit": false
