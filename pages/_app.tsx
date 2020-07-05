@@ -8,13 +8,6 @@ import React from 'react'
 import {Provider} from 'react-redux';
 import Error from './_error';
 
-export async function getInitialProps(ctx: any) {
-    console.log(234);
-    return {
-
-    }
-}
-
 export default function App({ Component, pageProps, router }: any) {
     const apolloClient = useApollo(pageProps.initialApolloState);
     return (

@@ -1,5 +1,6 @@
 - 애니메이션
-- apollo SSR
-    - 2번 요청 최적화
-    - 인증 필요시 요청 어떻게 할지
+
 - codegen
+- apollo SSR
+   - ssr 데이터 reload // 현재 기능 없음 베타 unstable_revalidate
+   - 인증 쿠키

@@ -18,7 +18,14 @@
     "no-console": false,
     "no-empty": false,
     "member-access": [true, "no-public"],
-    "no-implicit-dependencies": false
+    "no-implicit-dependencies": false,
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore"
+      ]
+    }
   }
 }
 
