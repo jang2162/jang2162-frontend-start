@@ -1,11 +1,10 @@
-import {initializeApollo} from '@/apollo';
 import Test from '@/components/Test/Test';
+import {SamplePost} from '@/generated-models';
 import {useServiceData, useServiceQuery} from '@/lib/Service';
 import {TEST, TEST2, testService} from '@/services/testService';
 import {GetStaticProps} from 'next';
 import Link from 'next/link';
 import * as React from 'react'
-import {SamplePost} from '@/generated-models';
 
 export default function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
