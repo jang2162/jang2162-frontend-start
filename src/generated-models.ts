@@ -10,9 +10,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** Date scalar type */
-  Date: Date;
+  Date: any;
   /** DateTime scalar type */
-  DateTime: Date;
+  DateTime: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };

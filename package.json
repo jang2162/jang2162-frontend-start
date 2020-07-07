@@ -50,9 +50,10 @@
   "devDependencies": {
     "@graphql-codegen/add": "^1.7.0",
     "@graphql-codegen/cli": "1.16.3",
+    "@graphql-codegen/introspection": "1.16.3",
     "@graphql-codegen/typescript": "1.16.3",
     "@graphql-codegen/typescript-operations": "1.16.3",
-    "@graphql-codegen/introspection": "1.16.3",
+    "@graphql-codegen/typescript-react-apollo": "^1.16.3",
     "@types/clone": "^0.1.30",
     "@types/express": "^4.17.2",
     "@types/gsap": "^1.20.2",

@@ -5,11 +5,12 @@ import {TEST, TEST2, testService} from '@/services/testService';
 import {GetStaticProps} from 'next';
 import Link from 'next/link';
 import * as React from 'react'
+import {SamplePost} from '@/generated-models';
 
 export default function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
 
-    const { loading: loading0, error: error0, data: data0 }  = useServiceQuery(serviceData,TEST);
+    const { loading: loading0, error: error0, data: data0 }  = useServiceQuery<{samplePostById: SamplePost}>(serviceData,TEST);
     const { loading: loading1, error: error1, data: data1 } = useServiceQuery(serviceData,TEST2);
     if (loading0 || loading1) { return <p>Loading...</p>; }
     if (error0 || error1) { return <p>Error :(</p>; }

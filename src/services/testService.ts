@@ -1,3 +1,4 @@
+import {SamplePost} from '@/generated-models'
 import {Service} from '@/lib/Service';
 import {gql} from 'apollo-boost';
 
@@ -16,8 +17,6 @@ testService.addQuery(TEST, gql`
     }
 `, (ctx) => ({id: ctx.params.foo}));
 
-
-
 testService.addQuery(TEST2, gql`
     query($id: ID!) {
         sampleUserById(id: $id) {
@@ -26,5 +25,5 @@ testService.addQuery(TEST2, gql`
         }
     }
 `, (ctx) => {
-    return {id: ctx.getData(TEST).samplePostById.writer_id};
+    return {id: ctx.getData<{samplePostById: SamplePost}>(TEST).samplePostById.writer_id};
 });

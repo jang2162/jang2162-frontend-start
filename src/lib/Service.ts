@@ -122,7 +122,7 @@ export const useServiceData = (service: Service) => {
     return serviceData;
 }
 
-export const useServiceQuery = (serviceData: ServiceData, name: string | symbol) => {
+export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string | symbol) => {
     const router = useRouter();
     const params = router.query;
     const curItem = serviceData.find(_item => _item.name === name);
@@ -168,7 +168,7 @@ export const useServiceQuery = (serviceData: ServiceData, name: string | symbol)
     } else {
         queryOptions.variables = curItem.variables;
     }
-    const query = useQuery(curItem.query, queryOptions);
+    const query = useQuery<T>(curItem.query, queryOptions);
 
     useMemo(() => {
         if (!query.loading) {
