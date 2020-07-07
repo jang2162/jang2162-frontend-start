@@ -1,0 +1,10 @@
+overwrite: true
+schema: "http://127.0.0.1:4000/graphql"
+generates:
+  ./src/generated-models.ts:
+    plugins:
+      - add: /* tslint:ignore */
+      - "typescript"
+      - "typescript-operations"
+    config:
+      maybeValue: T | null | undefined
