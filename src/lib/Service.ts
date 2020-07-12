@@ -8,20 +8,20 @@ import {useMemo} from 'react';
 
 interface ServiceContext<T = any> {
     params: T;
-    getData<U=any>(name: string | symbol): U;
+    getData<U=any>(name: string | symbol | DocumentNode): U;
 }
 
 type ServiceData = Array<{
-    name: string | symbol,
+    name: string | symbol | DocumentNode,
     query: DocumentNode,
     variables?: object | ((ctx: ServiceContext) => null | object),
     data?: any,
-    keep: Array<string | symbol>,
+    keep: Array<string | symbol | DocumentNode>,
     isEnd: boolean,
 }>;
 
 export class Service {
-    private queries: Array<{ name: string | symbol, query: DocumentNode, variables?: object | ((ctx: ServiceContext) => null | object) }> = [];
+    private queries: Array<{ name: string | symbol | DocumentNode, query: DocumentNode, variables?: object | ((ctx: ServiceContext) => null | object) }> = [];
 
     getServiceData(): ServiceData {
         return this.queries.map(item => ({
@@ -37,7 +37,7 @@ export class Service {
 
         const ctx: ServiceContext = {
             params,
-            getData: (name: string | symbol) => {
+            getData: (name: string | symbol | DocumentNode) => {
                 const targetItem = items.find(_item => _item.name === name);
                 if (targetItem?.isEnd) {
                     return targetItem.data;
@@ -112,8 +112,12 @@ export class Service {
         return apolloClient.cache.extract();
     }
 
-    addQuery<T=any>(name: string | symbol, query: DocumentNode, variables?: (ctx: ServiceContext) => T) {
-        this.queries.push({ name, query, variables});
+    addQuery<T=any>(name: string | symbol | DocumentNode, query?: DocumentNode, variables?: (ctx: ServiceContext) => T) {
+        if (typeof name !== 'string' && typeof name !== 'symbol') {
+            this.queries.push({ name, query: name, variables});
+        } else if (query){
+            this.queries.push({ name, query, variables});
+        }
     }
 }
 
@@ -122,7 +126,7 @@ export const useServiceData = (service: Service) => {
     return serviceData;
 }
 
-export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string | symbol) => {
+export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string | symbol | DocumentNode) => {
     const router = useRouter();
     const params = router.query;
     const curItem = serviceData.find(_item => _item.name === name);
@@ -135,7 +139,7 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
     if (typeof curItem.variables === 'function') {
         const ctx: ServiceContext = {
             params,
-            getData: (_name: string | symbol) => {
+            getData: (_name: string | symbol | DocumentNode) => {
                 const targetItem = serviceData.find(_item => _item.name === _name);
                 if (targetItem && targetItem.isEnd) {
                     return targetItem.data;
