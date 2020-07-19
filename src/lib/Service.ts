@@ -1,27 +1,34 @@
 import {initializeApollo} from '@/apollo';
 import {ServiceNotFoundError} from '@/error/ServiceNotFoundError';
-import {useQuery} from '@apollo/react-hooks';
-import {QueryHookOptions} from '@apollo/react-hooks/lib/types';
+import {useQuery} from '@apollo/client';
 import {DocumentNode} from 'graphql';
 import {useRouter} from 'next/router';
 import {useMemo} from 'react';
+import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 
 interface ServiceContext<T = any> {
     params: T;
     getData<U=any>(name: string | symbol | DocumentNode): U;
 }
 
+interface Options<T=any> {
+    variables?: T,
+    context?: any
+}
+
+type OptionsOrFn<T=any> = Options<T> | ((ctx: ServiceContext) => null | Options<T>);
+
 type ServiceData = Array<{
     name: string | symbol | DocumentNode,
     query: DocumentNode,
-    variables?: object | ((ctx: ServiceContext) => null | object),
+    options?: OptionsOrFn,
     data?: any,
     keep: Array<string | symbol | DocumentNode>,
     isEnd: boolean,
 }>;
 
 export class Service {
-    private queries: Array<{ name: string | symbol | DocumentNode, query: DocumentNode, variables?: object | ((ctx: ServiceContext) => null | object) }> = [];
+    private queries: Array<{ name: string | symbol | DocumentNode, query: DocumentNode, options?: OptionsOrFn }> = [];
 
     getServiceData(): ServiceData {
         return this.queries.map(item => ({
@@ -32,11 +39,11 @@ export class Service {
         }));
     }
 
-    async loadData<V>(params: V) {
+    async loadData(context: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any})) {
         const items = this.getServiceData();
-
+        const token = context?.req?.cookies?.token;
         const ctx: ServiceContext = {
-            params,
+            params: context.params,
             getData: (name: string | symbol | DocumentNode) => {
                 const targetItem = items.find(_item => _item.name === name);
                 if (targetItem?.isEnd) {
@@ -49,13 +56,17 @@ export class Service {
 
         const apolloClient = initializeApollo();
         for (const item of items) {
-            if (typeof item.variables === 'function') {
+            if (typeof item.options === 'function') {
                 try {
-                    const variables = item.variables(ctx);
-                    if (variables !== null) {
+                    const options = item.options(ctx);
+                    if (options !== null) {
                         item.data = (await apolloClient.query({
-                            query: item.query,
-                            variables
+                            variables: options.variables,
+                            context: {
+                                ...options.context,
+                                token,
+                            },
+                            query: item.query
                         })).data;
                     }
                     item.isEnd = true;
@@ -74,23 +85,31 @@ export class Service {
                 }
             } else {
                 item.data = await apolloClient.query({
+                    variables: item?.options?.variables,
+                    context: {
+                        ...item?.options?.context,
+                        token,
+                    },
                     query: item.query,
-                    variables: item.variables
                 });
                 item.isEnd = true;
             }
 
             for (const keepName of item.keep) {
                 const curItem = items.find(_item => _item.name === keepName);
-                if (!curItem || typeof curItem.variables !== 'function') {
+                if (!curItem || typeof curItem.options !== 'function') {
                     continue;
                 }
                 try {
-                    const variables = curItem.variables(ctx);
-                    if (variables !== null) {
+                    const options = curItem.options(ctx);
+                    if (options !== null) {
                         curItem.data = (await apolloClient.query({
-                            query: curItem.query,
-                            variables
+                            variables: options.variables,
+                            context: {
+                                ...options.context,
+                                token,
+                            },
+                            query: curItem.query
                         })).data;
                         curItem.isEnd = true;
                     }
@@ -112,17 +131,22 @@ export class Service {
         return apolloClient.cache.extract();
     }
 
-    addQuery<T=any>(name: string | symbol | DocumentNode, query?: DocumentNode, variables?: (ctx: ServiceContext) => T) {
+    addQuery<T=any>(name: string | symbol | DocumentNode, query?: DocumentNode, options?: OptionsOrFn<T>) {
         if (typeof name !== 'string' && typeof name !== 'symbol') {
-            this.queries.push({ name, query: name, variables});
+            this.queries.push({ name, query: name, options});
         } else if (query){
-            this.queries.push({ name, query, variables});
+            this.queries.push({ name, query, options});
         }
+    }
+
+    addQuerySimple<T=any>(query: DocumentNode, options?: OptionsOrFn<T>) {
+        this.addQuery<T>(query, query, options);
     }
 }
 
 export const useServiceData = (service: Service) => {
-    const serviceData = useMemo(() => service.getServiceData(), [service]);
+    const router = useRouter();
+    const serviceData = useMemo(() => service.getServiceData(), [service, router.query]);
     return serviceData;
 }
 
@@ -130,13 +154,13 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
     const router = useRouter();
     const params = router.query;
     const curItem = serviceData.find(_item => _item.name === name);
-    const queryOptions: QueryHookOptions = {};
 
     if (!curItem) {
         throw new Error(`useServiceData: ${name.toString()} is not found`)
     }
-
-    if (typeof curItem.variables === 'function') {
+    let options: Options = {};
+    let skip = false;
+    if (typeof curItem.options === 'function') {
         const ctx: ServiceContext = {
             params,
             getData: (_name: string | symbol | DocumentNode) => {
@@ -149,19 +173,19 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
             }
         }
         try {
-            const variables = curItem.variables(ctx);
-            if (variables === null) {
+            const _options = curItem.options(ctx);
+            if (_options === null) {
                 curItem.isEnd = true;
-                queryOptions.skip = true;
+                skip = true;
             } else {
-                queryOptions.variables = variables
+                options = _options;
             }
         } catch (e) {
             if (e.name === 'ServiceNotFoundError') {
                 const err: ServiceNotFoundError = e;
                 const targetItem = serviceData.find(_item => _item.name === err.target);
                 if (targetItem && !targetItem.isEnd) {
-                    queryOptions.skip = true;
+                    skip = true;
                 } else {
                     throw e;
                 }
@@ -169,10 +193,13 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
                 throw e;
             }
         }
-    } else {
-        queryOptions.variables = curItem.variables;
+    } else if (curItem.options){
+        options = curItem.options;
     }
-    const query = useQuery<T>(curItem.query, queryOptions);
+    const query = useQuery<T>(curItem.query, {
+        ...options,
+        skip
+    });
 
     useMemo(() => {
         if (!query.loading) {

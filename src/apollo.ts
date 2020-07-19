@@ -1,20 +1,39 @@
 import env from 'json-env';
 
-import {InMemoryCache} from 'apollo-cache-inmemory'
-import {ApolloClient} from 'apollo-client'
-import {HttpLink} from 'apollo-link-http'
+import {ApolloClient, ApolloLink, HttpLink, InMemoryCache} from '@apollo/client';
+import {setContext} from '@apollo/client/link/context';
+import { onError } from '@apollo/client/link/error';
 import {useMemo} from 'react'
 import {isBrowser} from 'utils';
 
-let apolloClient: ApolloClient<any>;
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path, extensions }) =>
+            console.error(
+                `[GraphQL error]: Message: ${extensions?.code ?? ''} ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`
+            )
+        );
+    }
+    if (networkError) { console.error(`[Network error]: ${networkError}`); }
+});
 
+const authLink = setContext((operation, prevContext) => {
+    return {headers: {cookie: `token=${prevContext.token}`}}
+})
+
+let apolloClient: ApolloClient<any>;
 function createApolloClient() {
     return new ApolloClient({
         ssrMode: !isBrowser,
-        link: new HttpLink({
-            uri: env.getString('graphql'),
-            credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-        }),
+        link: ApolloLink.from([
+            authLink,
+            errorLink,
+            new HttpLink({
+                uri: env.getString('graphql'),
+                credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+            })
+
+        ]),
         cache: new InMemoryCache(),
     })
 }

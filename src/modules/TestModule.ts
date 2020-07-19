@@ -34,20 +34,20 @@ class TestReducer extends ImmerReducer<TestState> {
     changeNameAndDelayedAdd(payload: {addNum:number, name:string}) {}
 }
 
-export const TestActions = createActionCreators(TestReducer);
+export const testActions = createActionCreators(TestReducer);
 export default createReducerFunction(TestReducer, initialState);
 
-const changeNameAndDelayedAddEpic: SimpleEpic<typeof TestActions.changeNameAndDelayedAdd, RootState> = (action$, state$) =>
+const changeNameAndDelayedAddEpic: SimpleEpic<typeof testActions.changeNameAndDelayedAdd, RootState> = (action$, state$) =>
     action$.pipe(
-        ofType(TestActions.changeNameAndDelayedAdd.type),
+        ofType(testActions.changeNameAndDelayedAdd.type),
         flatMap(action =>
             concat(
-                of(TestActions.setName(action.payload.name)),
-                of(TestActions.increment(action.payload.addNum)).pipe(
+                of(testActions.setName(action.payload.name)),
+                of(testActions.increment(action.payload.addNum)).pipe(
                     delay(500)
                 )
             )
         )
     );
 
-export const TestEpics = [changeNameAndDelayedAddEpic];
+export const testEpics = [changeNameAndDelayedAddEpic];

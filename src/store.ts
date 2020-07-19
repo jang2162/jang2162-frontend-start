@@ -3,7 +3,7 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {combineEpics, createEpicMiddleware, ofType} from 'redux-observable';
 import {BehaviorSubject} from 'rxjs';
 import {mergeMap, takeUntil} from 'rxjs/operators';
-import test, {TestEpics, TestState} from './modules/TestModule';
+import test, {testEpics, TestState} from './modules/TestModule';
 
 export interface RootState {
     test: TestState;
@@ -15,7 +15,7 @@ const rootReducer = combineReducers<RootState>({
 
 const epicMiddleware = createEpicMiddleware();
 const rootEpic = combineEpics<any>(
-    ...TestEpics,
+    ...testEpics,
 );
 
 const middleware: any[] = [];

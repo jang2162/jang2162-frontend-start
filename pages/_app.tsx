@@ -2,7 +2,7 @@ import {useApollo} from '@/apollo';
 import GlobalStyle from '@/common/GlobalStyle/GlobalStyle';
 import Layout from '@/Layout';
 import {store} from '@/store';
-import {ApolloProvider} from '@apollo/react-common';
+import {ApolloProvider} from '@apollo/client';
 import Head from 'next/head';
 import React from 'react'
 import {Provider} from 'react-redux';

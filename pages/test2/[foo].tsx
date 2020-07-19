@@ -2,7 +2,7 @@ import Test from '@/components/Test/Test';
 import {SamplePost} from '@/generated-models';
 import {useServiceData, useServiceQuery} from '@/lib/Service';
 import {SAMPLE_POST_BY_ID, SAMPLE_USER_BY_ID, testService} from '@/services/testService';
-import {GetStaticProps} from 'next';
+import {GetServerSideProps, GetStaticProps} from 'next';
 import Link from 'next/link';
 import * as React from 'react'
 
@@ -25,36 +25,26 @@ export default function(props: {hello: string}) {
             </Link>
             <br/>
             <br/>
-            <Link href="/test/[foo]" as={`/test/${1}`} shallow={true}>
+            <Link href="/test2/[foo]" as={`/test2/${1}`} shallow={true}>
                 <a>1111111111</a>
             </Link>
             <br/>
             <br/>
-            <Link href="/test/[foo]" as={`/test/${2}`} shallow={true}>
+            <Link href="/test2/[foo]" as={`/test2/${2}`} shallow={true}>
                 <a>22222222</a>
             </Link>
             <br/>
             <br/>
-            <Link href="/test/[foo]" as={`/test/${3}`} shallow={true}>
+            <Link href="/test2/[foo]" as={`/test2/${3}`} shallow={true}>
                 <a>33333333333333333</a>
             </Link>
         </>
     )
 };
 
-export async function getStaticPaths() {
-    return {
-        paths: [
-            { params: { foo: '1' } },
-            { params: { foo: '2' } },
-            { params: { foo: '3' } },
-        ],
-        fallback: true
-    };
-}
 
-
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    console.log(context);
     return {
         props: {
             initialApolloState: await testService.loadData(context),

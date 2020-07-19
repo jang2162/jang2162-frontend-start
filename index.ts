@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import next from 'next';
 import env from './libraries/json-env';
@@ -8,6 +9,7 @@ const app = next({conf, dev});
 const handle: any = app.getRequestHandler();
 
 const server = express()
+    .use(cookieParser())
     .get('*.*', express.static('public'))
     .get('*', handle);
 

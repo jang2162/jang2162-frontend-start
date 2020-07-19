@@ -1,13 +1,10 @@
 import {SamplePost} from '@/generated-models'
 import {Service} from '@/lib/Service';
-import {gql} from 'apollo-boost';
+import {gql} from '@apollo/client';
 
 export const testService = new Service();
 
-export const TEST = Symbol.for('TEST');
-export const TEST2 = Symbol.for('TEST2');
-
-testService.addQuery(TEST, gql`
+export const SAMPLE_POST_BY_ID = gql`
     query($id: ID!) {
         samplePostById(id: $id) {
             content
@@ -15,15 +12,16 @@ testService.addQuery(TEST, gql`
             writer_id
         }
     }
-`, (ctx) => ({id: ctx.params.foo}));
-
-testService.addQuery(TEST2, gql`
+`;
+export const SAMPLE_USER_BY_ID = gql`
     query($id: ID!) {
         sampleUserById(id: $id) {
             name
             birthday
         }
     }
-`, (ctx) => {
-    return {id: ctx.getData<{samplePostById: SamplePost}>(TEST).samplePostById.writer_id};
-});
+`;
+
+testService.addQuerySimple(SAMPLE_POST_BY_ID, (ctx) => ({variables: {id: ctx.params.foo}}));
+
+testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => ({variables: {id: ctx.getData<{samplePostById: SamplePost}>(SAMPLE_POST_BY_ID).samplePostById.writer_id}}));
