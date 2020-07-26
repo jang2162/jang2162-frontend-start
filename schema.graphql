@@ -8,9 +8,9 @@ schema {
 type Mutation {
     addSampleUser(user: SampleUserInput!): SampleUser
     addUser(user: UserInput!): User!
-    authentication(id: String!, pw: String!): authToken!
+    authentication(id: String!, pw: String!): String
     invalidate: String
-    refreshToken(refreshToken: String!): accessToken!
+    refreshToken: String
 }
 
 type PageInfo {
@@ -73,11 +73,6 @@ type UserConnection {
 
 type accessToken {
     token: String!
-}
-
-type authToken {
-    accessToken: String!
-    refreshToken: String!
 }
 
 enum CacheControlScope {

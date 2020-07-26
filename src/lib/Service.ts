@@ -2,9 +2,9 @@ import {initializeApollo} from '@/apollo';
 import {ServiceNotFoundError} from '@/error/ServiceNotFoundError';
 import {useQuery} from '@apollo/client';
 import {DocumentNode} from 'graphql';
+import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
 import {useMemo} from 'react';
-import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 
 interface ServiceContext<T = any> {
     params: T;
@@ -39,9 +39,10 @@ export class Service {
         }));
     }
 
-    async loadData(context: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any})) {
+    async loadData(context: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any, res?: any})) {
         const items = this.getServiceData();
         const token = context?.req?.cookies?.token;
+        const pageResponse = context?.res;
         const ctx: ServiceContext = {
             params: context.params,
             getData: (name: string | symbol | DocumentNode) => {
@@ -65,6 +66,7 @@ export class Service {
                             context: {
                                 ...options.context,
                                 token,
+                                pageResponse,
                             },
                             query: item.query
                         })).data;
@@ -89,6 +91,7 @@ export class Service {
                     context: {
                         ...item?.options?.context,
                         token,
+                        pageResponse,
                     },
                     query: item.query,
                 });
@@ -108,6 +111,7 @@ export class Service {
                             context: {
                                 ...options.context,
                                 token,
+                                pageResponse,
                             },
                             query: curItem.query
                         })).data;

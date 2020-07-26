@@ -22,12 +22,6 @@ export type AccessToken = {
   token: Scalars['String'];
 };
 
-export type AuthToken = {
-  __typename?: 'authToken';
-  accessToken: Scalars['String'];
-  refreshToken: Scalars['String'];
-};
-
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE'
@@ -42,8 +36,8 @@ export enum Direction_Type {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  authentication: AuthToken;
-  refreshToken: AccessToken;
+  authentication?: Maybe<Scalars['String']>;
+  refreshToken?: Maybe<Scalars['String']>;
   invalidate?: Maybe<Scalars['String']>;
   addSampleUser?: Maybe<SampleUser>;
   addUser: User;
@@ -53,11 +47,6 @@ export type Mutation = {
 export type MutationAuthenticationArgs = {
   id: Scalars['String'];
   pw: Scalars['String'];
-};
-
-
-export type MutationRefreshTokenArgs = {
-  refreshToken: Scalars['String'];
 };
 
 

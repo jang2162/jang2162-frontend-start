@@ -44,7 +44,6 @@ export default function(props: {hello: string}) {
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    console.log(context);
     return {
         props: {
             initialApolloState: await testService.loadData(context),
