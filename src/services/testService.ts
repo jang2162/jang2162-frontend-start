@@ -24,4 +24,10 @@ export const SAMPLE_USER_BY_ID = gql`
 
 testService.addQuerySimple(SAMPLE_POST_BY_ID, (ctx) => ({variables: {id: ctx.params.foo}}));
 
-testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => ({variables: {id: ctx.getData<{samplePostById: SamplePost}>(SAMPLE_POST_BY_ID).samplePostById.writer_id}}));
+testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => {
+    const query = ctx.getData<{samplePostById: SamplePost}>(SAMPLE_POST_BY_ID);
+    if (query?.samplePostById?.writer_id) {
+        return {variables: {id: query.samplePostById.writer_id}};
+    }
+    return null;
+});

@@ -6,7 +6,7 @@ import {GetServerSideProps, GetStaticProps} from 'next';
 import Link from 'next/link';
 import * as React from 'react'
 
-export default function(props: {hello: string}) {
+const test2Foo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
 
     const { loading: loading0, error: error0, data: data0 }  = useServiceQuery<{samplePostById: SamplePost}>(serviceData,SAMPLE_POST_BY_ID);
@@ -42,7 +42,6 @@ export default function(props: {hello: string}) {
     )
 };
 
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
@@ -52,3 +51,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
 }
+
+export default test2Foo;

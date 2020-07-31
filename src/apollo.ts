@@ -1,7 +1,9 @@
+import {IntrospectionLink} from 'introspection-link/src/introspection-link';
 import env from 'json-env';
 
 import {ApolloClient, ApolloLink, gql, HttpLink, InMemoryCache} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import fs from 'fs';
 import {ServerResponse} from 'http';
 import {useMemo} from 'react'
 import {parse as parseSetCookie} from 'set-cookie-parser';
@@ -13,6 +15,9 @@ export const REFRESH_TOKEN = gql`
         refreshToken
     }
 `;
+
+const introspection = fs.readFileSync('./introspection.json', 'utf-8').toString();
+const introspectionLink = IntrospectionLink(JSON.parse(introspection));
 
 const errorLink = onError(({ graphQLErrors, networkError, forward, operation, response }) => {
     for (const error of graphQLErrors ?? []) {
@@ -112,6 +117,7 @@ const httpLink = new HttpLink({
 
 function getLink() {
     return ApolloLink.from([
+        introspectionLink,
         errorLink,
         authLink,
         httpLink

@@ -6,7 +6,7 @@ import {GetStaticProps} from 'next';
 import Link from 'next/link';
 import * as React from 'react'
 
-export default function(props: {hello: string}) {
+const testFoo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
 
     const { loading: loading0, error: error0, data: data0 }  = useServiceQuery<{samplePostById: SamplePost}>(serviceData,SAMPLE_POST_BY_ID);
@@ -63,3 +63,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
         }
     }
 }
+
+export default testFoo;

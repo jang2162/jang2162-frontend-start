@@ -1,4 +1,3 @@
-// import {routeInfoList} from '@/routes';
 import React, {PropsWithChildren} from 'react';
 
 interface LayoutProps {
@@ -7,10 +6,13 @@ interface LayoutProps {
     errorPage: any;
 }
 
-export default (props: PropsWithChildren<LayoutProps>) => {
+const layout =  (props: PropsWithChildren<LayoutProps>) => {
     return (
         <>
             {props.children}
         </>
     )
 }
+
+
+export default layout;

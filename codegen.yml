@@ -8,3 +8,8 @@ generates:
       - "typescript-operations"
     config:
       maybeValue: T | null | undefined
+  ./introspection.json:
+    plugins:
+      - introspection
+    config:
+      minify: false
