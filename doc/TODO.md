@@ -1,7 +1,9 @@
 - 애니메이션
 - apollo SSR
-   - ssr 데이터 reload // 현재 기능 없음 베타 unstable_revalidate
+   - ssr 데이터 reload // revalidate
 - apollo link
    - 일괄
-   - 토큰 자동 재발급
    - 스칼라
+     - input 
+     - data
+   

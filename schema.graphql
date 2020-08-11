@@ -99,6 +99,7 @@ input PageInput {
 }
 
 input SamplePostForm {
+    date: Date
     page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
     searchKeyword: String = ""
     userId: String = ""
