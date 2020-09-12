@@ -8,6 +8,9 @@ generates:
       - "typescript-operations"
     config:
       maybeValue: T | null | undefined
+      scalars:
+        Date: Date
+        DateTime: Date
   ./introspection.json:
     plugins:
       - introspection

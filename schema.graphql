@@ -26,7 +26,7 @@ type PageInfo {
 
 type Query {
     samplePostById(id: ID!): SamplePost
-    samplePosts(form: SamplePostForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, searchKeyword : "", userId : ""}): SamplePostConnection!
+    samplePosts(form: SamplePostForm): SamplePostConnection!
     sampleUserById(id: ID!): SampleUser
     sampleUsers(form: SampleUserForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, name : ""}): SampleUserConnection!
     userById(id: ID!): User
@@ -90,6 +90,10 @@ enum SORT_TYPE {
     DESC
 }
 
+input DateTest {
+    dt: Date!
+}
+
 input PageInput {
     cursor: String = ""
     direction: DIRECTION_TYPE = NEXT
@@ -99,7 +103,12 @@ input PageInput {
 }
 
 input SamplePostForm {
-    date: Date
+    date1: DateTest
+    date2: [DateTest]
+    date3: [Date]
+    date4: [Date]!
+    date5: [Date!]
+    date6: [Date!]!
     page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
     searchKeyword: String = ""
     userId: String = ""

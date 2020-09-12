@@ -2,9 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link'
 import * as React from 'react';
 
-
-
-export default (props: any) => {
+const indexPage = (props: any) => {
     return (
         <div>
             <Head>
@@ -12,10 +10,12 @@ export default (props: any) => {
             </Head>
             <div>Index Page</div>
 
-            <Link href="/test">
+            <Link href="/test2/2">
                 <a>Goto Test</a>
             </Link> <br/><br/>
 
         </div>
     )
 }
+
+export default indexPage;

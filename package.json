@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.0.2",
+    "@apollo/client": "^3.1.5",
     "clone": "^2.1.2",
     "cookie-parser": "^1.4.5",
     "cross-env": "^5.2.0",
@@ -76,7 +76,7 @@
     "babel-plugin-styled-components": "^1.10.0",
     "nodemon": "^1.19.1",
     "react-global-render-visualizer": "^0.1.1",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^3.4.3",
     "redux-devtools-extension": "^2.13.8",
     "ts-node": "^8.3.0",
     "tslint": "^5.13.1",

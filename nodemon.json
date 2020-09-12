@@ -1,6 +1,5 @@
 {
   "watch": [
-    "libraries",
     "environments",
     "index.ts",
     "routes.json"

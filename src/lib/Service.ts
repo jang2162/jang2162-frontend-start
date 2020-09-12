@@ -1,5 +1,6 @@
 import {initializeApollo} from '@/apollo';
 import {ServiceNotFoundError} from '@/error/ServiceNotFoundError';
+import {introspectionUtil} from '@/lib/introspection/util';
 import {useQuery} from '@apollo/client';
 import {DocumentNode} from 'graphql';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
@@ -62,7 +63,7 @@ export class Service {
                     const options = item.options(ctx);
                     if (options !== null) {
                         item.data = (await apolloClient.query({
-                            variables: options.variables,
+                            variables: introspectionUtil.serialize(options.variables, item.query),
                             context: {
                                 ...options.context,
                                 token,
@@ -107,7 +108,7 @@ export class Service {
                     const options = curItem.options(ctx);
                     if (options !== null) {
                         curItem.data = (await apolloClient.query({
-                            variables: options.variables,
+                            variables: introspectionUtil.serialize(options.variables, curItem.query),
                             context: {
                                 ...options.context,
                                 token,
@@ -137,8 +138,13 @@ export class Service {
 
     addQuery<T=any>(name: string | symbol | DocumentNode, query?: DocumentNode, options?: OptionsOrFn<T>) {
         if (typeof name !== 'string' && typeof name !== 'symbol') {
-            this.queries.push({ name, query: name, options});
-        } else if (query){
+            query = name;
+        }
+
+        if (query) {
+            if (typeof options !== 'function' && options?.variables) {
+                (options as Options).variables = introspectionUtil.serialize(options.variables, query);
+            }
             this.queries.push({ name, query, options});
         }
     }
@@ -183,6 +189,9 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
                 skip = true;
             } else {
                 options = _options;
+                if (options.variables) {
+                    options.variables = introspectionUtil.serialize(options.variables, curItem.query)
+                }
             }
         } catch (e) {
             if (e.name === 'ServiceNotFoundError') {

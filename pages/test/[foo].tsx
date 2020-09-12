@@ -13,8 +13,6 @@ const testFoo = function(props: {hello: string}) {
     const { loading: loading1, error: error1, data: data1 } = useServiceQuery<{sampleUserById: SamplePost}>(serviceData,SAMPLE_USER_BY_ID);
     if (loading0 || loading1) { return <p>Loading...</p>; }
     if (error0 || error1) { return <p>Error :(</p>; }
-    console.log(data0);
-    console.log(data1);
     return (
         <>
             <div style={{padding: 50}}>

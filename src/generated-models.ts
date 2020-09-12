@@ -10,9 +10,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** Date scalar type */
-  Date: any;
+  Date: Date;
   /** DateTime scalar type */
-  DateTime: any;
+  DateTime: Date;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
@@ -27,6 +27,10 @@ export enum CacheControlScope {
   Private = 'PRIVATE'
 }
 
+
+export type DateTest = {
+  dt: Scalars['Date'];
+};
 
 
 export enum Direction_Type {
@@ -138,7 +142,12 @@ export type SamplePostForm = {
   page?: Maybe<PageInput>;
   searchKeyword?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
-  date?: Maybe<Scalars['Date']>;
+  date1?: Maybe<DateTest>;
+  date2?: Maybe<Array<Maybe<DateTest>>>;
+  date3?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  date4: Array<Maybe<Scalars['Date']>>;
+  date5?: Maybe<Array<Scalars['Date']>>;
+  date6: Array<Scalars['Date']>;
 };
 
 export type SampleUser = {

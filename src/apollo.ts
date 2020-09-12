@@ -1,9 +1,7 @@
-import {IntrospectionLink} from 'introspection-link/src/introspection-link';
 import env from 'json-env';
 
 import {ApolloClient, ApolloLink, gql, HttpLink, InMemoryCache} from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import fs from 'fs';
 import {ServerResponse} from 'http';
 import {useMemo} from 'react'
 import {parse as parseSetCookie} from 'set-cookie-parser';
@@ -15,9 +13,6 @@ export const REFRESH_TOKEN = gql`
         refreshToken
     }
 `;
-
-const introspection = fs.readFileSync('./introspection.json', 'utf-8').toString();
-const introspectionLink = IntrospectionLink(JSON.parse(introspection));
 
 const errorLink = onError(({ graphQLErrors, networkError, forward, operation, response }) => {
     for (const error of graphQLErrors ?? []) {
@@ -33,80 +28,74 @@ const errorLink = onError(({ graphQLErrors, networkError, forward, operation, re
 const authLink = new ApolloLink((operation, forward) => {
     const prevContext = operation.getContext();
     let pageResponse: ServerResponse;
-    if (!isBrowser) {
+    if (!isBrowser && prevContext.token) {
         pageResponse = prevContext?.pageResponse;
-        operation.setContext({
+        const newContext = {
             ...prevContext,
             headers: {
                 ...prevContext?.headers,
                 cookie: `token=${prevContext.token}`
             }
-        });
+        };
+        operation.setContext(newContext);
     }
-    const observable = forward(operation);
-    return new Observable(observer => {
-        observable.subscribe(result => {
-            let needRefresh = false;
-            if (result.errors) {
-                for (const error of result.errors) {
-                    const { extensions } = error;
-                    if (extensions?.code === 'ACCESS_TOKEN_EXPIRED') {
-                        needRefresh = true;
-                    }
+
+    return forward(operation).flatMap(result => {
+        let needRefresh = false;
+        if (result.errors) {
+            for (const error of result.errors) {
+                const { extensions } = error;
+                if (extensions?.code === 'ACCESS_TOKEN_EXPIRED') {
+                    needRefresh = true;
                 }
             }
+        }
 
-            if (needRefresh) {
-                let newSetCookie: string;
-                ApolloLink.execute(ApolloLink.from([
-                    new ApolloLink((refreshOperation, refreshForward) => {
-                        const refreshObservable = refreshForward(refreshOperation);
-                        return new Observable(refreshObserver => {
-                            refreshObservable.subscribe(refreshResult => {
-                                if (!isBrowser) {
-                                    newSetCookie = refreshOperation.getContext()?.response?.headers?.get?.('set-cookie')
-                                }
-                                refreshObserver.next(refreshResult);
-                                refreshObserver.complete();
-                            })
+        if (needRefresh) {
+            let newSetCookie: string;
+            return ApolloLink.execute(ApolloLink.from([
+                new ApolloLink((refreshOperation, refreshForward) => {
+                    const refreshObservable: Observable<any> = refreshForward(refreshOperation);
+                    return new Observable(refreshObserver => {
+                        refreshObservable.subscribe(refreshResult => {
+                            if (!isBrowser) {
+                                newSetCookie = refreshOperation.getContext()?.response?.headers?.get?.('set-cookie')
+                            }
+                            refreshObserver.next(refreshResult);
+                            refreshObserver.complete();
                         })
-                    }),
-                    httpLink
-                ]), {
-                    query: REFRESH_TOKEN,
-                    context: !isBrowser ? {
-                        headers: {
-                            cookie: `token=${prevContext.token}`
-                        }
-                    } : undefined
-                }).subscribe(refreshResult => {
-                    if (refreshResult.errors) {
-                        observer.next(refreshResult);
-                        observer.complete();
-                        // 추후 ACCESS_TOKEN_NOT_EXPIRED 고려
-                    } else {
-                        if (!isBrowser && newSetCookie) {
-                            const token = parseSetCookie(newSetCookie).find(item => item.name === 'token');
-                            pageResponse.setHeader('set-cookie', newSetCookie);
-                            operation.setContext({
-                                ...prevContext,
-                                headers: {
-                                    ...prevContext?.headers,
-                                    cookie: `token=${token?.value}`
-                                }
-                            });
-                        }
-                        forward(operation).subscribe(newResult => {
-                            observer.next(newResult);
-                            observer.complete();
-                        })
+                    })
+                }),
+                httpLink
+            ]), {
+                query: REFRESH_TOKEN,
+                context: !isBrowser ? {
+                    headers: {
+                        cookie: `token=${prevContext.token}`
                     }
-                });
-            } else {
-                observer.next(result);
-                observer.complete();
-            }
-        });
+                } : undefined
+            }).flatMap(refreshResult => {
+                if (refreshResult.errors) {
+                    return Observable.of(refreshResult);
+                    // 추후 ACCESS_TOKEN_NOT_EXPIRED 고려
+                } else {
+                    if (!isBrowser && newSetCookie) {
+                        const token = parseSetCookie(newSetCookie).find(item => item.name === 'token');
+                        pageResponse.setHeader('set-cookie', newSetCookie);
+                        operation.setContext({
+                            ...prevContext,
+                            headers: {
+                                ...prevContext?.headers,
+                                cookie: `token=${token?.value}`
+                            }
+                        });
+                    }
+                    return forward(operation);
+                }
+            });
+        } else {
+            return Observable.of(result);
+        }
     });
 });
 
@@ -117,7 +106,6 @@ const httpLink = new HttpLink({
 
 function getLink() {
     return ApolloLink.from([
-        introspectionLink,
         errorLink,
         authLink,
         httpLink

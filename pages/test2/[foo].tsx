@@ -9,18 +9,18 @@ import * as React from 'react'
 const test2Foo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
 
-    const { loading: loading0, error: error0, data: data0 }  = useServiceQuery<{samplePostById: SamplePost}>(serviceData,SAMPLE_POST_BY_ID);
+    const aaa  = useServiceQuery<{samplePostById: SamplePost}>(serviceData, SAMPLE_POST_BY_ID);
     // const { loading: loading1, error: error1, data: data1 } = useServiceQuery<{sampleUserById: SamplePost}>(serviceData,SAMPLE_USER_BY_ID);
-    if (loading0) { return <p>Loading...</p>; }
-    if (error0) { return <p>Error :(</p>; }
+    if (aaa.loading) { return <p>Loading...</p>; }
+    if (aaa.error) { return <p>Error :(</p>; }
     // if (loading0 || loading1) { return <p>Loading...</p>; }
     // if (error0 || error1) { return <p>Error :(</p>; }
-    console.log(data0);
-    // console.log(data1);
+    console.log(aaa.data);
     return (
         <>
             <div style={{padding: 50}}>
                 <Test test={props.hello}/>
+                {JSON.stringify(aaa.data)}
             </div>
             <Link href="/">
                 <a>Goto Index</a>
