@@ -40,12 +40,12 @@ export class Service {
         }));
     }
 
-    async loadData(context: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any, res?: any})) {
+    async loadData(propsContext: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any, res?: any})) {
         const items = this.getServiceData();
-        const token = context?.req?.cookies?.token;
-        const pageResponse = context?.res;
+        const token = propsContext?.req?.cookies?.token;
+        const pageResponse = propsContext?.res;
         const ctx: ServiceContext = {
-            params: context.params,
+            params: propsContext.params,
             getData: (name: string | symbol | DocumentNode) => {
                 const targetItem = items.find(_item => _item.name === name);
                 if (targetItem?.isEnd) {
@@ -58,27 +58,31 @@ export class Service {
 
         const apolloClient = initializeApollo();
         for (const item of items) {
+            let variables;
+            let context;
+            let isSkip = false;
+
             if (typeof item.options === 'function') {
                 try {
                     const options = item.options(ctx);
                     if (options !== null) {
-                        item.data = (await apolloClient.query({
-                            variables: introspectionUtil.serialize(options.variables, item.query),
-                            context: {
-                                ...options.context,
-                                token,
-                                pageResponse,
-                            },
-                            query: item.query
-                        })).data;
+                        variables = options.variables
+                        context = {
+                            ...options.context,
+                            token,
+                            pageResponse,
+                        }
+                    } else {
+                        isSkip = true;
                     }
-                    item.isEnd = true;
+
                 } catch (e) {
                     if (e.name === 'ServiceNotFoundError') {
                         const err: ServiceNotFoundError = e;
                         const targetItem = items.find(_item => _item.name === err.target);
                         if (targetItem && !targetItem.isEnd) {
                             targetItem.keep.push(item.name);
+                            continue;
                         } else {
                             throw e;
                         }
@@ -87,18 +91,29 @@ export class Service {
                     }
                 }
             } else {
-                item.data = await apolloClient.query({
-                    variables: item?.options?.variables,
-                    context: {
-                        ...item?.options?.context,
-                        token,
-                        pageResponse,
-                    },
-                    query: item.query,
-                });
-                item.isEnd = true;
+                variables = item?.options?.variables
+                context = {
+                    ...item?.options?.context,
+                    token,
+                    pageResponse,
+                }
             }
 
+            if (!isSkip) {
+                if (variables) {
+                    variables = introspectionUtil.serialize(variables, item.query);
+                }
+
+                item.data = introspectionUtil.parseData(
+                    (await apolloClient.query({
+                        variables,
+                        context,
+                        query: item.query
+                    })).data
+                );
+            }
+
+            item.isEnd = true;
             for (const keepName of item.keep) {
                 const curItem = items.find(_item => _item.name === keepName);
                 if (!curItem || typeof curItem.options !== 'function') {
@@ -107,17 +122,19 @@ export class Service {
                 try {
                     const options = curItem.options(ctx);
                     if (options !== null) {
-                        curItem.data = (await apolloClient.query({
-                            variables: introspectionUtil.serialize(options.variables, curItem.query),
-                            context: {
-                                ...options.context,
-                                token,
-                                pageResponse,
-                            },
-                            query: curItem.query
-                        })).data;
-                        curItem.isEnd = true;
+                        curItem.data = introspectionUtil.parseData(
+                            (await apolloClient.query({
+                                variables: introspectionUtil.serialize(options.variables, curItem.query),
+                                context: {
+                                    ...options.context,
+                                    token,
+                                    pageResponse,
+                                },
+                                query: curItem.query
+                            })).data
+                        );
                     }
+                    curItem.isEnd = true;
                 } catch (e) {
                     if (e.name === 'ServiceNotFoundError') {
                         const err: ServiceNotFoundError = e;
@@ -220,10 +237,10 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
         }
 
         if (!query.error) {
+            query.data = introspectionUtil.parseData(query.data);
             curItem.data = query.data;
         }
 
-    }, [query.loading])
-
+    }, [query, query.loading])
     return query;
 }

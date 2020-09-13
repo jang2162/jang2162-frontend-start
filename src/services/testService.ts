@@ -1,4 +1,4 @@
-import {DateTest, SamplePost, SamplePostForm, Scalars} from '@/generated-models'
+import {DateTest, SamplePost, SamplePostConnection, SamplePostForm, Scalars} from '@/generated-models'
 import {Service} from '@/lib/Service';
 import {gql} from '@apollo/client';
 import moment from 'moment';
@@ -26,6 +26,7 @@ export const SAMPLE_POST_BY_ID = gql`
         }) {
             list {
                 subject
+                writer_id
                 writer {
                     birthday
                 }
@@ -41,6 +42,16 @@ export const SAMPLE_USER_BY_ID = gql`
         }
     }
 `;
+
+
+testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => {
+    const query = ctx.getData<{samplePosts: SamplePostConnection}>(SAMPLE_POST_BY_ID);
+
+    if (query?.samplePosts?.list?.[0]?.writer_id) {
+        return {variables: {id: query?.samplePosts?.list?.[0]?.writer_id}};
+    }
+    return null;
+});
 
 testService.addQuerySimple<{
     dates: DateTest,
@@ -59,10 +70,3 @@ testService.addQuerySimple<{
     }
 }));
 
-testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => {
-    const query = ctx.getData<{samplePostById: SamplePost}>(SAMPLE_POST_BY_ID);
-    if (query?.samplePostById?.writer_id) {
-        return {variables: {id: query.samplePostById.writer_id}};
-    }
-    return null;
-});

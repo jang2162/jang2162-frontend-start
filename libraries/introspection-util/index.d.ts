@@ -9,5 +9,6 @@ export declare class IntrospectionUtil {
     private serializeFromAST;
     constructor(introspectionData: any);
     serialize(variables: Record<string, any>, query: DocumentNode): Record<string, any>;
+    parseData(data: any): any;
     addScalar<T = any>(name: string, parse: (value: string) => T, serialize: (value: T) => string): void;
 }

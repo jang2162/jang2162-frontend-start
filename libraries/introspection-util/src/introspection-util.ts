@@ -24,6 +24,11 @@ export class IntrospectionUtil {
         return newVariables;
     }
 
+    parseData(data: any) {
+        console.log(data);
+        return data;
+    }
+
     addScalar<T=any>(name: string, parse: (value: string) => T, serialize: (value: T) => string) {
         this.items.push({name, parse, serialize});
     }

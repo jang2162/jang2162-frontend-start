@@ -15,7 +15,6 @@ const test2Foo = function(props: {hello: string}) {
     if (aaa.error) { return <p>Error :(</p>; }
     // if (loading0 || loading1) { return <p>Loading...</p>; }
     // if (error0 || error1) { return <p>Error :(</p>; }
-    console.log(aaa.data);
     return (
         <>
             <div style={{padding: 50}}>

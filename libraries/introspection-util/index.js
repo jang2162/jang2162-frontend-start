@@ -21,6 +21,10 @@ var IntrospectionUtil = /** @class */ (function () {
         }
         return newVariables;
     };
+    IntrospectionUtil.prototype.parseData = function (data) {
+        console.log(data);
+        return data;
+    };
     IntrospectionUtil.prototype.addScalar = function (name, parse, serialize) {
         this.items.push({ name: name, parse: parse, serialize: serialize });
     };
