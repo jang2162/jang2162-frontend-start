@@ -24,13 +24,62 @@ export class IntrospectionUtil {
         return newVariables;
     }
 
-    parseData(data: any) {
-        console.log(data);
-        return data;
+    parseData(data?: Record<string, any>) {
+        if (!data) {
+            return data;
+        }
+        const returnData: any = {};
+        for (const i in data) {
+            returnData[i] = Array.isArray(data[i]) ?
+                data[i].map((item: any) => this.parseObject(item)) :
+                this.parseObject(data[i]);
+        }
+        return returnData;
     }
 
     addScalar<T=any>(name: string, parse: (value: string) => T, serialize: (value: T) => string) {
         this.items.push({name, parse, serialize});
+    }
+
+    private parseObject(data: Record<string, any>) {
+        const type = this.introspectionData.__schema.types.find((item: any) => item.name === data.__typename && item.kind === 'OBJECT');
+        const returnData: any = {};
+        for (const field of type.fields) {
+            if (data.hasOwnProperty(field.name)) {
+                returnData[field.name] = this.parseObjectField(data[field.name], field.type, false);
+            }
+        }
+        return returnData;
+    }
+
+    private parseObjectField(value: any, type: IntersectionType, isNonNull: boolean): any  {
+        if (type.kind === 'SCALAR') {
+            if (value || isNonNull) {
+                return this.parseScalar(value, type.name);
+            }
+        } else if (type.kind === 'OBJECT') {
+            if (value || isNonNull) {
+                return this.parseObject(value);
+            }
+        } else if (type.ofType) {
+            const ofType = type.ofType;
+            if (type.kind === 'NON_NULL') {
+                return this.parseObjectField(value, ofType, true);
+            } else if (type.kind === 'LIST') {
+                if (Array.isArray(value)) {
+                    return value.map(item => this.parseObjectField(item, ofType, false))
+                }
+            }
+        }
+        return value;
+    }
+
+    private parseScalar(value: any, name: string) {
+        const scalarItem = this.items.find((item: any) => item.name === name);
+        if (scalarItem) {
+            return scalarItem.parse(value);
+        }
+        return value;
     }
 
     private serializeFromIntrospection(value: any, name: string) {

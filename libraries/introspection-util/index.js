@@ -22,11 +22,63 @@ var IntrospectionUtil = /** @class */ (function () {
         return newVariables;
     };
     IntrospectionUtil.prototype.parseData = function (data) {
-        console.log(data);
-        return data;
+        var _this = this;
+        if (!data) {
+            return data;
+        }
+        var returnData = {};
+        for (var i in data) {
+            returnData[i] = Array.isArray(data[i]) ?
+                data[i].map(function (item) { return _this.parseObject(item); }) :
+                this.parseObject(data[i]);
+        }
+        return returnData;
     };
     IntrospectionUtil.prototype.addScalar = function (name, parse, serialize) {
         this.items.push({ name: name, parse: parse, serialize: serialize });
+    };
+    IntrospectionUtil.prototype.parseObject = function (data) {
+        var type = this.introspectionData.__schema.types.find(function (item) { return item.name === data.__typename && item.kind === 'OBJECT'; });
+        var returnData = {};
+        for (var _i = 0, _a = type.fields; _i < _a.length; _i++) {
+            var field = _a[_i];
+            if (data.hasOwnProperty(field.name)) {
+                returnData[field.name] = this.parseObjectField(data[field.name], field.type, false);
+            }
+        }
+        return returnData;
+    };
+    IntrospectionUtil.prototype.parseObjectField = function (value, type, isNonNull) {
+        var _this = this;
+        if (type.kind === 'SCALAR') {
+            if (value || isNonNull) {
+                return this.parseScalar(value, type.name);
+            }
+        }
+        else if (type.kind === 'OBJECT') {
+            if (value || isNonNull) {
+                return this.parseObject(value);
+            }
+        }
+        else if (type.ofType) {
+            var ofType_1 = type.ofType;
+            if (type.kind === 'NON_NULL') {
+                return this.parseObjectField(value, ofType_1, true);
+            }
+            else if (type.kind === 'LIST') {
+                if (Array.isArray(value)) {
+                    return value.map(function (item) { return _this.parseObjectField(item, ofType_1, false); });
+                }
+            }
+        }
+        return value;
+    };
+    IntrospectionUtil.prototype.parseScalar = function (value, name) {
+        var scalarItem = this.items.find(function (item) { return item.name === name; });
+        if (scalarItem) {
+            return scalarItem.parse(value);
+        }
+        return value;
     };
     IntrospectionUtil.prototype.serializeFromIntrospection = function (value, name) {
         var type = this.introspectionData.__schema.types.find(function (item) { return item.name === name; });
@@ -61,13 +113,13 @@ var IntrospectionUtil = /** @class */ (function () {
             }
         }
         else if (type.ofType) {
-            var ofType_1 = type.ofType;
+            var ofType_2 = type.ofType;
             if (type.kind === 'NON_NULL') {
-                return this.serializeInputObjectField(value, ofType_1, true);
+                return this.serializeInputObjectField(value, ofType_2, true);
             }
             else if (type.kind === 'LIST') {
                 if (Array.isArray(value)) {
-                    return value.map(function (item) { return _this.serializeInputObjectField(item, ofType_1, false); });
+                    return value.map(function (item) { return _this.serializeInputObjectField(item, ofType_2, false); });
                 }
             }
         }

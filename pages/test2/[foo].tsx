@@ -11,10 +11,11 @@ const test2Foo = function(props: {hello: string}) {
 
     const aaa  = useServiceQuery<{samplePostById: SamplePost}>(serviceData, SAMPLE_POST_BY_ID);
     // const { loading: loading1, error: error1, data: data1 } = useServiceQuery<{sampleUserById: SamplePost}>(serviceData,SAMPLE_USER_BY_ID);
-    if (aaa.loading) { return <p>Loading...</p>; }
+    if (!aaa.ready) { return <p>Loading...</p>; }
     if (aaa.error) { return <p>Error :(</p>; }
     // if (loading0 || loading1) { return <p>Loading...</p>; }
     // if (error0 || error1) { return <p>Error :(</p>; }
+    console.log(aaa.data);
     return (
         <>
             <div style={{padding: 50}}>

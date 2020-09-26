@@ -5,7 +5,7 @@ import {useQuery} from '@apollo/client';
 import {DocumentNode} from 'graphql';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
-import {useMemo} from 'react';
+import {useMemo, useState} from 'react';
 
 interface ServiceContext<T = any> {
     params: T;
@@ -230,17 +230,26 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
         ...options,
         skip
     });
-
+    const [oldQuery, setOldQuery] = useState(query);
+    const [data, setData] = useState();
+    const [loading, setLoading] = useState(true);
     useMemo(() => {
+        setLoading(true);
+        setOldQuery(query);
         if (!query.loading) {
             curItem.isEnd = true;
         }
 
         if (!query.error) {
-            query.data = introspectionUtil.parseData(query.data);
-            curItem.data = query.data;
+            curItem.data = introspectionUtil.parseData(query.data);
+            setLoading(false);
+            setData(curItem.data);
         }
+    }, [query, query.loading]);
 
-    }, [query, query.loading])
-    return query;
+    return {
+        ...query,
+        ready: !(loading || query.loading || oldQuery !== query),
+        data
+    };
 }
