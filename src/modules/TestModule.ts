@@ -20,11 +20,11 @@ const initialState: TestState = {
 };
 
 class TestReducer extends ImmerReducer<TestState> {
-    increment(payload: number = 1) {
+    increment(payload = 1) {
         this.draftState.counter.value += payload;
     }
 
-    decrement(payload: number = 1) {
+    decrement(payload = 1) {
         this.draftState.counter.value -= payload;
     }
 
