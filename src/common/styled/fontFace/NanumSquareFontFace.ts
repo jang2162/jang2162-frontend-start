@@ -1,5 +1,3 @@
-import {css} from 'styled-components';
-
 import NanumSquareBEot from '@r/fonts/NanumSquare/NanumSquareB.eot';
 import NanumSquareBTtf from '@r/fonts/NanumSquare/NanumSquareB.ttf';
 import NanumSquareBWoff from '@r/fonts/NanumSquare/NanumSquareB.woff';
@@ -16,6 +14,7 @@ import NanumSquareREot from '@r/fonts/NanumSquare/NanumSquareR.eot';
 import NanumSquareRTtf from '@r/fonts/NanumSquare/NanumSquareR.ttf';
 import NanumSquareRWoff from '@r/fonts/NanumSquare/NanumSquareR.woff';
 import NanumSquareRWoff2 from '@r/fonts/NanumSquare/NanumSquareR.woff2';
+import {css} from 'styled-components';
 
 export default css`
 @font-face {

@@ -6,7 +6,7 @@ interface LayoutProps {
     errorPage: any;
 }
 
-const layout =  (props: PropsWithChildren<LayoutProps>) => {
+const LayoutWrapper = (props: PropsWithChildren<LayoutProps>) => {
     return (
         <>
             {props.children}
@@ -15,4 +15,4 @@ const layout =  (props: PropsWithChildren<LayoutProps>) => {
 }
 
 
-export default layout;
+export default LayoutWrapper;

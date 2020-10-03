@@ -1,10 +1,10 @@
-import Test from '@/components/Test/Test';
 import {SamplePost} from '@/generated-models';
 import {useServiceData, useServiceQuery} from '@/lib/Service';
 import {SAMPLE_POST_BY_ID, SAMPLE_USER_BY_ID, testService} from '@/services/testService';
+import Test from '@/templates/sample/Test';
 import {GetStaticProps} from 'next';
 import Link from 'next/link';
-import * as React from 'react'
+import React from 'react'
 
 const testFoo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);

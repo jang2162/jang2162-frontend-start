@@ -1,5 +1,5 @@
 import Document, {DocumentContext, Html, Head, Main, NextScript} from 'next/document';
-import * as React from 'react'
+import React from 'react'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class extends Document {
@@ -34,8 +34,8 @@ export default class extends Document {
             <Html>
             <Head/>
             <body>
-            <Main />
-            <NextScript/>
+                <Main />
+                <NextScript/>
             </body>
             </Html>
         )

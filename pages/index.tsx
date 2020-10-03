@@ -1,6 +1,6 @@
+import StyledTest from '@/templates/sample/StyledTest';
 import Head from 'next/head';
-import Link from 'next/link'
-import * as React from 'react';
+import React from 'react';
 
 const indexPage = (props: any) => {
     return (
@@ -9,10 +9,7 @@ const indexPage = (props: any) => {
                 <title>INDEX2</title>
             </Head>
             <div>Index Page</div>
-
-            <Link href="/test2/2">
-                <a>Goto Test</a>
-            </Link> <br/><br/>
+            <StyledTest/>
 
         </div>
     )
