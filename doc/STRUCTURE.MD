@@ -1,31 +1,56 @@
-- doc
-- environments
-- libraries
-- node_modules
-- pages
-- public
-- resources
-- src
-- .babelrc
-- .eslintrc
-- .gitignore
-- .graphqlconfig
-- .graphqlconfig.sample
-- codegen.yml
-- ecosystem.config.js
-- index.ts
-- introspection.json
-- next.config.js
-- next-env.d.ts
-- nodemon.json
-- package.json
-- package-lock.json
-- README.md
-- schema.graphql
-- tsconfig.json
-- tsconfig.server.json
-
-
-
-
-
+- /doc
+    - 문서정리
+- /environments
+    - 환경 변수 파일 모움
+    - 예제 환경변수 파일: env.sample.json
+- /libraries
+    - 프로젝트 내에서 사용되는 모듈
+- /pages
+    - Next.JS 페이지
+    - 페이지 파일의 경로가 url 주소
+    - 페이지 파일에서 레이아웃 설정, 데이터 로드, 탬플릿로드 역할 수행
+- /public
+    - static 파일
+- /resources
+- /src
+    - /common
+        - /layouts
+        - /styled
+            - /components
+            - /fontFace
+            - /GlobalStyleComponent.tsx
+        - /LayoutWrapper.tsx
+        - /Styled.ts
+    - /error
+    - /lib
+        - /introspection
+            - /scalar
+            - /util.ts
+        - /MyImmerReducer.ts
+        - /Service.ts
+        - /UseSelector.ts
+    - /modules
+    - /services
+    - /sample
+    - /apollo.ts
+    - /generated-models.ts
+    - /serviceWorker.ts
+    - /store.ts
+- /.babelrc
+- /.eslintrc
+- /.gitignore
+- /.graphqlconfig
+- /.graphqlconfig.sample
+- /codegen.yml
+- /ecosystem.config.js
+- /index.ts
+- /introspection.json
+- /next.config.js
+- /next-env.d.ts
+- /nodemon.json
+- /package.json
+- /package-lock.json
+- /README.md
+- /schema.graphql
+- /tsconfig.json
+- /tsconfig.server.json
