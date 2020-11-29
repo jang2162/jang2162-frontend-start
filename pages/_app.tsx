@@ -1,6 +1,6 @@
 import {useApollo} from '@/apollo';
+import {LayoutWrapper} from '@/common/LayoutWrapper';
 import GlobalStyle from '@/common/styled/GlobalStyleComponent';
-import LayoutWrapper from '@/common/LayoutWrapper';
 import {store} from '@/store';
 import {ApolloProvider} from '@apollo/client';
 import Head from 'next/head';

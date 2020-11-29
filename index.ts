@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import next from 'next';
-import env from './libraries/json-env';
+import {env} from './libraries/json-env';
 import conf from './next.config.js';
 
 const dev = !env.getBool('production', false);
