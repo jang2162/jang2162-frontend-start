@@ -13,15 +13,13 @@
     - static 파일
 - /resources
 - /src
-    - /common
-        - /layouts
-        - /styled
-            - /components
-            - /fontFace
-            - /GlobalStyleComponent.tsx
-        - /LayoutWrapper.tsx
-        - /Styled.ts
-    - /error
+    - /components
+        - common
+    - /layouts
+    - /styled
+        - /fontFace
+        - /theme
+        - /GlobalStyled.tsx
     - /lib
         - /introspection
             - /scalar
@@ -31,7 +29,7 @@
         - /UseSelector.ts
     - /modules
     - /services
-    - /sample
+    - /templates
     - /apollo.ts
     - /generated-models.ts
     - /serviceWorker.ts

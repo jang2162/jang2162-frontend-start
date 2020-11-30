@@ -5,10 +5,11 @@ import Test from '@/templates/sample/Test';
 import {GetServerSideProps} from 'next';
 import Link from 'next/link';
 import React from 'react'
+import {useSpring, animated} from 'react-spring'
 
 const test2Foo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
-
+    const btnSpring = useSpring({opacity: 1, from: {opacity: 0}, delay: 500, config: {duration: 1500}})
     const aaa  = useServiceQuery<{samplePostById: SamplePost}>(serviceData, SAMPLE_POST_BY_ID);
     const bbb = useServiceQuery<{sampleUserById: SamplePost}>(serviceData,SAMPLE_USER_BY_ID);
     if (!aaa.ready || !bbb.ready) { return <p>Loading...</p>; }
@@ -17,6 +18,10 @@ const test2Foo = function(props: {hello: string}) {
     console.log(bbb.data);
     return (
         <>
+            <animated.div style={btnSpring}>
+                asasd
+            </animated.div>
+
             <div style={{padding: 50}}>
                 <Test test={props.hello}/>
                 {JSON.stringify(aaa.data)}
@@ -48,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         props: {
             initialApolloState: await testService.loadData(context),
             hello: '안녕',
-            layout: 'DEFAULT'
+            layout: 'DefaultLayout'
         }
     }
 }

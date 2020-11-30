@@ -1,4 +1,4 @@
-import {Button} from '@/common/Styled';
+import {Button} from '@/components/common/components/Button';
 import useSelector from '@/lib/UseSelector';
 import {testActions} from '@/modules/TestModule';
 import React from 'react';
@@ -16,6 +16,7 @@ const Test = (props: {test: string}) => {
             Counter value: {value} <br/>
             <Button onClick={click}>TEST</Button>
         </div>
+
     )
 };
 export default Test;

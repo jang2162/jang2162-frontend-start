@@ -1,11 +1,21 @@
 import {initializeApollo} from '@/apollo';
-import {ServiceNotFoundError} from '@/error/ServiceNotFoundError';
 import {introspectionUtil} from '@/lib/introspection/util';
 import {useQuery} from '@apollo/client';
 import {DocumentNode} from 'graphql';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
 import {useMemo, useState} from 'react';
+
+class ServiceNotFoundError extends Error {
+    constructor(private _target: string | symbol | DocumentNode) {
+        super('ServiceNotFoundError');
+        this.name = 'ServiceNotFoundError';
+    }
+
+    get target(): string | symbol | DocumentNode {
+        return this._target;
+    }
+}
 
 interface ServiceContext<T = any> {
     params: T;
