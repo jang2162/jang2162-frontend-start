@@ -1,11 +1,13 @@
 import {useApollo} from '@/apollo';
 import {LayoutMapper} from '@/lib/LayoutWrapper';
-import {GlobalStyled} from '@/styled/GlobalStyled';
 import {store} from '@/store';
+import {GlobalStyled} from '@/styled/GlobalStyled';
+import {theme} from '@/styled/theme/defaultTheme';
 import {ApolloProvider} from '@apollo/client';
 import Head from 'next/head';
 import React from 'react'
 import {Provider} from 'react-redux';
+import {ThemeProvider} from 'styled-components';
 
 export default function App({ Component, pageProps, router }: any) {
     const apolloClient = useApollo(pageProps.initialApolloState);
@@ -20,9 +22,11 @@ export default function App({ Component, pageProps, router }: any) {
             <GlobalStyled/>
             <ApolloProvider client={apolloClient}>
                 <Provider store={store}>
-                    <Layout router={router}>
-                        <Component {...pageProps} />
-                    </Layout>
+                    <ThemeProvider theme={theme}>
+                        <Layout router={router}>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ThemeProvider>
                 </Provider>
             </ApolloProvider>
         </>

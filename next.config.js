@@ -1,8 +1,9 @@
-const path = require('path')
+const path = require('path');
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
     webpack (config, options) {
-        const { module = {}, resolve = {} } = config;
+        const { module = {}, resolve = {}, plugins = [] } = config;
         return {
             ...config,
             module: {
@@ -14,12 +15,16 @@ module.exports = {
                         loader: 'file-loader',
                         options: {
                             name: '[name]_[hash].[ext]',
-                            publicPath: `/_next/static/files`,
+                            publicPath: '/_next/static/files',
                             outputPath: 'static/files'
                         }
                     }
                 ]
             },
+            plugins: [
+                ...plugins,
+                new Dotenv({ silent: true })
+            ],
             resolve: {
                 ...resolve,
                 alias: {

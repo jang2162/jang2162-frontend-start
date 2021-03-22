@@ -1,4 +1,3 @@
-import {Button} from '@/components/common/components/Button';
 import useSelector from '@/lib/UseSelector';
 import {testActions} from '@/modules/TestModule';
 import React from 'react';
@@ -14,7 +13,7 @@ const Test = (props: {test: string}) => {
             {props.test}<br/><br/>
             Name: {name} <br/>
             Counter value: {value} <br/>
-            <Button onClick={click}>TEST</Button>
+            <button onClick={click}>TEST</button>
         </div>
 
     )

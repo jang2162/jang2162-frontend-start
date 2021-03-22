@@ -1,11 +1,11 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import next from 'next';
-import {env} from './libraries/json-env';
 import conf from './next.config.js';
+import {Env} from './src/env';
 
-const dev = !env.getBool('production', false);
-const app = next({conf, dev});
+const dev = Env.NODE_ENV !== 'production';
+const app = next({conf: conf as any, dev});
 const handle: any = app.getRequestHandler();
 
 const server = express()
@@ -21,10 +21,9 @@ const server = express()
         process.exit(1);
     }
 
-    const host = env.getString('host', '127.0.0.1');
-    const port= env.getNumber('port', 8000);
-
-    server.listen(port, host, () => {
+    const host = Env.SERVER_HOST ?? '127.0.0.1';
+    const port = Env.SERVER_PORT ?? 8000;
+    server.listen(port, () => {
         console.log(`listening on http://${host==='0.0.0.0' ? '127.0.0.1' : host}:${port}`);
     });
 })();

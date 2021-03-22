@@ -3,10 +3,6 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "*": [
-        "node_modules/*",
-        "libraries/*"
-      ],
       "@/*": [
         "src/*"
       ],
@@ -36,10 +32,6 @@
     "resolveJsonModule": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./libraries/@types"
-    ],
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },

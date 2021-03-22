@@ -13,7 +13,6 @@
         }
       }
     ],
-    ["./libraries/json-env/babel-plugin"],
     ["babel-plugin-static-fs"]
   ],
   "env": {

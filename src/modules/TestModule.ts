@@ -1,9 +1,9 @@
 import {createActionCreators, createReducerFunction, ImmerReducer} from '@/lib/MyImmerReducer';
+import {SimpleEpic} from '@/lib/simple-epic';
 import {RootState} from '@/store';
 import {Epic, ofType} from 'redux-observable';
 import {concat, of} from 'rxjs';
 import {delay, flatMap} from 'rxjs/operators';
-import {SimpleEpic} from 'simple-epic';
 
 export interface TestState {
     name: string;
