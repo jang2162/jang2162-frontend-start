@@ -50,6 +50,12 @@
             }
         }]
     },
+   "ignorePatterns": [
+     "ecosystem.config.js",
+     "next.config.js",
+     "dist/",
+     "node_modules/"
+   ],
     "settings": {
         "react": {
             "version": "detect"
