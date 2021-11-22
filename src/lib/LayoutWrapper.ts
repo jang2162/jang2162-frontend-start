@@ -1,7 +1,9 @@
+import {PropsWithChildren} from 'react';
+
+import {Router} from 'next/router'
+
 import {DefaultLayout} from '@/layouts/DefaultLayout';
 import {SimpleLayout} from '@/layouts/SimpleLayout';
-import {Router} from 'next/router'
-import {PropsWithChildren} from 'react';
 
 export type LayoutComponentProps = PropsWithChildren<{ router: Router }>
 

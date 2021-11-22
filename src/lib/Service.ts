@@ -1,10 +1,14 @@
-import {initializeApollo} from '@/apollo';
-import {introspectionUtil} from '@/lib/introspection/util';
+import {useMemo, useState} from 'react';
+
 import {useQuery} from '@apollo/client';
+
 import {DocumentNode} from 'graphql';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
-import {useMemo, useState} from 'react';
+
+import {initializeApollo} from '@/apollo';
+import {introspectionUtil} from '@/lib/introspection/util';
+
 
 class ServiceNotFoundError extends Error {
     constructor(private _target: string | symbol | DocumentNode) {
@@ -87,8 +91,8 @@ export class Service {
                     }
 
                 } catch (e) {
-                    if (e.name === 'ServiceNotFoundError') {
-                        const err: ServiceNotFoundError = e;
+                    if ((e as Error).name === 'ServiceNotFoundError') {
+                        const err = e as ServiceNotFoundError;
                         const targetItem = items.find(_item => _item.name === err.target);
                         if (targetItem && !targetItem.isEnd) {
                             targetItem.keep.push(item.name);
@@ -114,13 +118,12 @@ export class Service {
                     variables = introspectionUtil.serialize(variables, item.query);
                 }
 
-                item.data = introspectionUtil.parseData(
-                    (await apolloClient.query({
-                        variables,
-                        context,
-                        query: item.query
-                    })).data
-                );
+                const {data} = await apolloClient.query({
+                    variables,
+                    context,
+                    query: item.query
+                });
+                item.data = introspectionUtil.parseData(data);
             }
 
             item.isEnd = true;
@@ -132,22 +135,21 @@ export class Service {
                 try {
                     const options = curItem.options(ctx);
                     if (options !== null) {
-                        curItem.data = introspectionUtil.parseData(
-                            (await apolloClient.query({
-                                variables: introspectionUtil.serialize(options.variables, curItem.query),
-                                context: {
-                                    ...options.context,
-                                    token,
-                                    pageResponse,
-                                },
-                                query: curItem.query
-                            })).data
-                        );
+                        const {data} = await apolloClient.query({
+                            variables: introspectionUtil.serialize(options.variables, curItem.query),
+                            context: {
+                                ...options.context,
+                                token,
+                                pageResponse,
+                            },
+                            query: curItem.query
+                        });
+                        curItem.data = introspectionUtil.parseData(data);
                     }
                     curItem.isEnd = true;
                 } catch (e) {
-                    if (e.name === 'ServiceNotFoundError') {
-                        const err: ServiceNotFoundError = e;
+                    if ((e as Error).name === 'ServiceNotFoundError') {
+                        const err = e as ServiceNotFoundError;
                         const targetItem = items.find(_item => _item.name === err.target);
                         if (targetItem && !targetItem.isEnd) {
                             targetItem.keep.push(keepName);
@@ -221,8 +223,8 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
                 }
             }
         } catch (e) {
-            if (e.name === 'ServiceNotFoundError') {
-                const err: ServiceNotFoundError = e;
+            if ((e as Error).name === 'ServiceNotFoundError') {
+                const err = e as ServiceNotFoundError;
                 const targetItem = serviceData.find(_item => _item.name === err.target);
                 if (targetItem && !targetItem.isEnd) {
                     skip = true;

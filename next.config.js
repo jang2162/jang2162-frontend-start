@@ -1,5 +1,7 @@
 const path = require('path');
 const Dotenv = require("dotenv-webpack");
+const webpack = require("webpack");
+const fs = require("fs");
 
 module.exports = {
     webpack (config, options) {
@@ -23,7 +25,11 @@ module.exports = {
             },
             plugins: [
                 ...plugins,
-                new Dotenv({ silent: true })
+                new webpack.DefinePlugin({
+                    INTROSPECTION_DATA: fs.readFileSync('./introspection.json', 'utf-8').toString(),
+                    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                }),
+                new Dotenv({ silent: true }),
             ],
             resolve: {
                 ...resolve,

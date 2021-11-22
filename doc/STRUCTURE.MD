@@ -1,10 +1,5 @@
 - /doc
     - 문서정리
-- /environments
-    - 환경 변수 파일 모움
-    - 예제 환경변수 파일: env.sample.json
-- /libraries
-    - 프로젝트 내에서 사용되는 모듈
 - /pages
     - Next.JS 페이지
     - 페이지 파일의 경로가 url 주소
@@ -16,17 +11,17 @@
     - /components
         - common
     - /layouts
+    - /lib
+      - /introspection
+          - /scalar
+          - /util.ts
+      - /Service.ts
+    - recoil
     - /styled
         - /fontFace
         - /theme
         - /GlobalStyled.tsx
-    - /lib
-        - /introspection
-            - /scalar
-            - /util.ts
-        - /MyImmerReducer.ts
-        - /Service.ts
-        - /UseSelector.ts
+
     - /modules
     - /services
     - /templates
@@ -34,21 +29,17 @@
     - /generated-models.ts
     - /serviceWorker.ts
     - /store.ts
-- /.babelrc
+- /.env
 - /.eslintrc
 - /.gitignore
 - /.graphqlconfig
-- /.graphqlconfig.sample
-- /codegen.yml
+- /codegen.yml : codegen 에서 생성
 - /ecosystem.config.js
-- /index.ts
-- /introspection.json
+- /introspection.json : codegen 에서 생성
 - /next.config.js
 - /next-env.d.ts
-- /nodemon.json
 - /package.json
 - /package-lock.json
 - /README.md
-- /schema.graphql
+- /schema.graphql : IntelliJ 에서 생성
 - /tsconfig.json
-- /tsconfig.server.json

@@ -1,4 +1,3 @@
-/* tslint:ignore */
 export type Maybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 

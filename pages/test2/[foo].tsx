@@ -1,13 +1,19 @@
+import React from 'react'
+
+import {GetServerSideProps} from 'next';
+
+import Link from 'next/link';
+
+import {useSpring, animated} from 'react-spring'
+
 import {SamplePost} from '@/generated-models';
 import {useServiceData, useServiceQuery} from '@/lib/Service';
 import {SAMPLE_USER_BY_ID, SAMPLE_POST_BY_ID, testService} from '@/services/testService';
 import Test from '@/templates/sample/Test';
-import {GetServerSideProps} from 'next';
-import Link from 'next/link';
-import React from 'react'
-import {useSpring, animated} from 'react-spring'
 
-const test2Foo = function(props: {hello: string}) {
+
+
+const Test2Foo = function(props: {hello: string}) {
     const serviceData = useServiceData(testService);
     const btnSpring = useSpring({opacity: 1, from: {opacity: 0}, delay: 500, config: {duration: 1500}})
     const aaa  = useServiceQuery<{samplePostById: SamplePost}>(serviceData, SAMPLE_POST_BY_ID);
@@ -58,4 +64,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 }
 
-export default test2Foo;
+export default Test2Foo;

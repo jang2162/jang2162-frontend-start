@@ -4,8 +4,7 @@ dotenv.config();
 
 export class Env {
     static readonly NODE_ENV = envString(process.env.NODE_ENV, 'development')
-    static readonly SERVER_HOST = envString(process.env.SERVER_HOST, 'localhost')
-    static readonly SERVER_PORT = envInt(process.env.SERVER_PORT, 8000)
+    static readonly SERVER_URL = process.env.SERVER_URL
     static readonly GRAPHQL_URL = process.env.GRAPHQL_URL
 }
 

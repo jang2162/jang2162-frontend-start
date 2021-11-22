@@ -1,8 +1,12 @@
-import StyledTest from '@/templates/sample/StyledTest';
-import Head from 'next/head';
 import React from 'react';
 
-const indexPage = (props: any) => {
+import Head from 'next/head';
+
+import {useTheme} from '@/styled/themes';
+import StyledTest from '@/templates/sample/StyledTest';
+
+
+const IndexPage = (props: any) => {
     return (
         <div>
             <Head>
@@ -15,4 +19,4 @@ const indexPage = (props: any) => {
     )
 }
 
-export default indexPage;
+export default IndexPage;

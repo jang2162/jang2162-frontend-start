@@ -14,9 +14,9 @@ import NanumSquareRoundREot from '@r/fonts/NanumSquareRound/NanumSquareRoundR.eo
 import NanumSquareRoundRTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundR.ttf';
 import NanumSquareRoundRWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff';
 import NanumSquareRoundRWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff2';
-import {css} from 'styled-components';
+import css from 'styled-jsx/css';
 
-export default css`
+export default css.global`
 @font-face {
     font-family: 'NanumSquareRound';
     font-weight: 300;

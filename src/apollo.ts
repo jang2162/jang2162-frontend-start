@@ -1,9 +1,12 @@
+import {useMemo} from 'react'
+
 import {ServerResponse} from 'http';
+
 import {ApolloClient, ApolloLink, gql, HttpLink, InMemoryCache} from '@apollo/client';
 import {onError} from '@apollo/client/link/error';
-import {useMemo} from 'react'
 import {parse as parseSetCookie} from 'set-cookie-parser';
 import Observable from 'zen-observable';
+
 import {isBrowser} from './lib/utils';
 
 export const REFRESH_TOKEN = gql`

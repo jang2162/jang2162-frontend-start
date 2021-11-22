@@ -1,6 +1,6 @@
-import fs from 'fs';
 import {GraphQLError} from 'graphql';
 import {DocumentNode, TypeNode} from 'graphql/language/ast';
+
 import {parseDateValue} from './scalar/DateScalar';
 
 interface IntersectionType {
@@ -151,9 +151,8 @@ class IntrospectionUtil {
         return value;
     }
 }
-
-const introspection = fs.readFileSync('./introspection.json', 'utf-8').toString();
-export const introspectionUtil = new IntrospectionUtil(JSON.parse(introspection))
+declare const INTROSPECTION_DATA: any;
+export const introspectionUtil = new IntrospectionUtil(INTROSPECTION_DATA)
 
 introspectionUtil.addScalar<Date>('Date', value => parseDateValue(value).set(({h:0, m:0, s:0, ms:0})).toDate(), value => parseDateValue(value).format('YYYY-MM-DD'));
 
