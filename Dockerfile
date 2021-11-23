@@ -1,10 +1,12 @@
 FROM node:16
 
+RUN ls -al /app
+
 WORKDIR /app
 COPY . /app
 
 RUN pwd
-RUN ls -al
+RUN ls -al  /app
 
 RUN npm install
 RUN npm run build
