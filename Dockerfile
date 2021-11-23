@@ -5,7 +5,6 @@ RUN ls -al /app
 WORKDIR /app
 COPY . /app
 
-RUN pwd
 RUN ls -al  /app
 
 RUN npm install
