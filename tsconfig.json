@@ -1,7 +1,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "@types"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "@types"
+    ],
     "baseUrl": "./",
     "paths": {
       "@/*": [
@@ -35,7 +38,12 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": [
     "node_modules"
@@ -43,6 +51,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ]
 }

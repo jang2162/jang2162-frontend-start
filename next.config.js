@@ -4,6 +4,9 @@ const webpack = require("webpack");
 const fs = require("fs");
 
 module.exports = {
+    experimental: {
+        appDir: true,
+    },
     webpack (config, options) {
         const { module = {}, resolve = {}, plugins = [] } = config;
         return {
