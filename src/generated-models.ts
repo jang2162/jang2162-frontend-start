@@ -1,6 +1,8 @@
 export type Maybe<T> = T | null | undefined;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
-
+export type InputMaybe<T> = T | null | undefined;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -8,42 +10,32 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Date scalar type */
   Date: Date;
-  /** DateTime scalar type */
-  DateTime: Date;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
+  Datetime: any;
+  Timestamp: Date;
+  Void: any;
 };
 
-export type AccessToken = {
-  __typename?: 'accessToken';
-  token: Scalars['String'];
+export type CursorPageInfo = {
+  __typename?: 'CursorPageInfo';
+  hasMore: Scalars['Boolean'];
+  next?: Maybe<Scalars['String']>;
+  prev?: Maybe<Scalars['String']>;
+  totalCount: Scalars['Int'];
 };
 
-export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
-
-
-export type DateTest = {
-  dt: Scalars['Date'];
+export type CursorPageInput = {
+  cursor?: InputMaybe<Scalars['String']>;
+  size?: InputMaybe<Scalars['Int']>;
 };
-
-
-export enum Direction_Type {
-  Next = 'NEXT',
-  Prev = 'PREV'
-}
 
 export type Mutation = {
   __typename?: 'Mutation';
   authentication?: Maybe<Scalars['String']>;
-  refreshToken?: Maybe<Scalars['String']>;
+  insertTempPost?: Maybe<Scalars['Void']>;
+  insertTempUser?: Maybe<Scalars['Void']>;
   invalidate?: Maybe<Scalars['String']>;
-  addSampleUser?: Maybe<SampleUser>;
-  addUser: User;
+  refreshToken?: Maybe<Scalars['String']>;
 };
 
 
@@ -53,161 +45,65 @@ export type MutationAuthenticationArgs = {
 };
 
 
-export type MutationAddSampleUserArgs = {
-  user: SampleUserInput;
+export type MutationInsertTempPostArgs = {
+  content: Scalars['String'];
+  title: Scalars['String'];
+  writerId: Scalars['Int'];
 };
 
 
-export type MutationAddUserArgs = {
-  user: UserInput;
+export type MutationInsertTempUserArgs = {
+  birth: Scalars['Date'];
+  name: Scalars['String'];
 };
 
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  totalCount: Scalars['Int'];
-  next?: Maybe<Scalars['String']>;
-  prev?: Maybe<Scalars['String']>;
-  hasNext: Scalars['Boolean'];
-  hasPrev: Scalars['Boolean'];
-  sortBy: Scalars['String'];
-  sort: Sort_Type;
-  direction: Direction_Type;
-};
-
-export type PageInput = {
-  cursor?: Maybe<Scalars['String']>;
-  size?: Maybe<Scalars['Int']>;
-  sortBy?: Maybe<Scalars['String']>;
-  sort?: Maybe<Sort_Type>;
-  direction?: Maybe<Direction_Type>;
+export type OffsetPageInput = {
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  sampleUsers: SampleUserConnection;
-  sampleUserById?: Maybe<SampleUser>;
-  samplePosts: SamplePostConnection;
-  samplePostById?: Maybe<SamplePost>;
-  users: UserConnection;
-  userById?: Maybe<User>;
+  nowDate?: Maybe<Scalars['Date']>;
+  nowDatetime?: Maybe<Scalars['Datetime']>;
+  nowTimestamp?: Maybe<Scalars['Timestamp']>;
+  selectPostById: TempPost;
+  selectPosts: Array<TempPost>;
+  selectUserById: TempUser;
+  selectUsers: Array<TempUser>;
 };
 
 
-export type QuerySampleUsersArgs = {
-  form?: Maybe<SampleUserForm>;
+export type QuerySelectPostByIdArgs = {
+  id: Scalars['Int'];
 };
 
 
-export type QuerySampleUserByIdArgs = {
+export type QuerySelectUserByIdArgs = {
+  id: Scalars['Int'];
+};
+
+export type TempPost = {
+  __typename?: 'TempPost';
+  content: Scalars['String'];
   id: Scalars['ID'];
+  postId: Scalars['Int'];
+  regDate: Scalars['Date'];
+  title: Scalars['String'];
+  writer: TempUser;
+  writerId: Scalars['Int'];
 };
 
-
-export type QuerySamplePostsArgs = {
-  form?: Maybe<SamplePostForm>;
-};
-
-
-export type QuerySamplePostByIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryUsersArgs = {
-  form?: Maybe<UserForm>;
-};
-
-
-export type QueryUserByIdArgs = {
-  id: Scalars['ID'];
-};
-
-export type SamplePost = {
-  __typename?: 'SamplePost';
-  id: Scalars['ID'];
-  subject: Scalars['String'];
-  content?: Maybe<Scalars['String']>;
-  writer: SampleUser;
-  writer_id: Scalars['ID'];
-};
-
-export type SamplePostConnection = {
-  __typename?: 'SamplePostConnection';
-  pageInfo: PageInfo;
-  list: Array<SamplePost>;
-};
-
-export type SamplePostForm = {
-  page?: Maybe<PageInput>;
-  searchKeyword?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
-  date1?: Maybe<DateTest>;
-  date2?: Maybe<Array<Maybe<DateTest>>>;
-  date3?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  date4: Array<Maybe<Scalars['Date']>>;
-  date5?: Maybe<Array<Scalars['Date']>>;
-  date6: Array<Scalars['Date']>;
-};
-
-export type SampleUser = {
-  __typename?: 'SampleUser';
+export type TempUser = {
+  __typename?: 'TempUser';
+  birth: Scalars['Date'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  birthday?: Maybe<Scalars['Date']>;
-  posts?: Maybe<SamplePostConnection>;
+  posts: Array<TempPost>;
+  userId: Scalars['Int'];
 };
 
-
-export type SampleUserPostsArgs = {
-  page?: Maybe<PageInput>;
+export type AccessToken = {
+  __typename?: 'accessToken';
+  token: Scalars['String'];
 };
-
-export type SampleUserConnection = {
-  __typename?: 'SampleUserConnection';
-  pageInfo: PageInfo;
-  list?: Maybe<Array<SampleUser>>;
-};
-
-export type SampleUserForm = {
-  page?: Maybe<PageInput>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type SampleUserInput = {
-  name: Scalars['String'];
-  birthday?: Maybe<Scalars['Date']>;
-};
-
-export enum Sort_Type {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
-
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  loginId: Scalars['String'];
-  name: Scalars['String'];
-  birthday?: Maybe<Scalars['Date']>;
-  createDate: Scalars['Date'];
-};
-
-export type UserConnection = {
-  __typename?: 'UserConnection';
-  pageInfo: PageInfo;
-  list?: Maybe<Array<User>>;
-};
-
-export type UserForm = {
-  page?: Maybe<PageInput>;
-  name?: Maybe<Scalars['String']>;
-};
-
-export type UserInput = {
-  name: Scalars['String'];
-  loginId: Scalars['String'];
-  password: Scalars['String'];
-  birthday?: Maybe<Scalars['Date']>;
-};
-
