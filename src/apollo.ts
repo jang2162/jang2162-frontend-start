@@ -5,7 +5,7 @@ import {ServerResponse} from 'http';
 import {ApolloClient, ApolloLink, gql, HttpLink, InMemoryCache} from '@apollo/client';
 import {onError} from '@apollo/client/link/error';
 import {parse as parseSetCookie} from 'set-cookie-parser';
-import Observable from 'zen-observable';
+import {Observable} from 'zen-observable-ts';
 
 import {isBrowser} from './lib/utils';
 
@@ -15,7 +15,7 @@ export const REFRESH_TOKEN = gql`
     }
 `;
 
-const errorLink = onError(({ graphQLErrors, networkError, forward, operation, response }) => {
+const errorLink = onError(({ graphQLErrors, networkError}) => {
     for (const error of graphQLErrors ?? []) {
         const { message, locations, path, extensions } = error;
         console.error(

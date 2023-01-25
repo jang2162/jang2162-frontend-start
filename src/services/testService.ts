@@ -1,5 +1,5 @@
 import {gql} from '@apollo/client';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import {DateTest, SamplePostConnection, Scalars} from '@/generated-models'
 import {Service} from '@/lib/Service';
@@ -61,11 +61,11 @@ testService.addQuerySimple<{
 }>(SAMPLE_POST_BY_ID, (ctx) => ({
     variables: {
         dates: {
-            dt: moment('2020-06-01').toDate()
+            dt: dayjs('2020-06-01').toDate()
         },
-        dates2: [{dt: moment('2020-06-28').toDate()}, {dt: moment('2020-06-28').toDate()}],
-        date2: [moment('2020-05-05 09:00:00').toDate(), moment('2020-05-02 17:00:00').toDate()],
-        date1: moment('2020-05-05 09:00:00').toDate(),
+        dates2: [{dt: dayjs('2020-06-28').toDate()}, {dt: dayjs('2020-06-28').toDate()}],
+        date2: [dayjs('2020-05-05 09:00:00').toDate(), dayjs('2020-05-02 17:00:00').toDate()],
+        date1: dayjs('2020-05-05 09:00:00').toDate(),
         id: ctx.params.foo
     }
 }));

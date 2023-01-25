@@ -1,5 +1,6 @@
-import {LayoutComponentProps} from '@/lib/LayoutWrapper';
 import React from 'react';
+
+import {LayoutComponentProps} from '@/lib/LayoutWrapper';
 
 export const SimpleLayout = (props: LayoutComponentProps) =>
     (<>

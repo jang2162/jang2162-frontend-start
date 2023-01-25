@@ -184,8 +184,7 @@ export class Service {
 }
 
 export const useServiceData = (service: Service) => {
-    const router = useRouter();
-    const serviceData = useMemo(() => service.getServiceData(), [service, router.query]);
+    const serviceData = useMemo(() => service.getServiceData(), [service]);
     return serviceData;
 }
 
@@ -257,7 +256,7 @@ export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string 
             setLoading(false);
             setData(curItem.data);
         }
-    }, [query, query.loading]);
+    }, [query, curItem]);
 
     return {
         ...query,

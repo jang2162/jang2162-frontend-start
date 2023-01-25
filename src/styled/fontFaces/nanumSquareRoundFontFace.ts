@@ -1,3 +1,5 @@
+import css from 'styled-jsx/css';
+
 import NanumSquareRoundBEot from '@r/fonts/NanumSquareRound/NanumSquareRoundB.eot';
 import NanumSquareRoundBTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundB.ttf';
 import NanumSquareRoundBWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundB.woff';
@@ -14,7 +16,6 @@ import NanumSquareRoundREot from '@r/fonts/NanumSquareRound/NanumSquareRoundR.eo
 import NanumSquareRoundRTtf from '@r/fonts/NanumSquareRound/NanumSquareRoundR.ttf';
 import NanumSquareRoundRWoff from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff';
 import NanumSquareRoundRWoff2 from '@r/fonts/NanumSquareRound/NanumSquareRoundR.woff2';
-import css from 'styled-jsx/css';
 
 export default css.global`
 @font-face {

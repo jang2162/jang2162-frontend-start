@@ -1,11 +1,11 @@
+import dayjs from 'dayjs';
 import {GraphQLError} from 'graphql';
-import moment from 'moment';
 
-export function parseDateValue(value: number | string | moment.Moment | Date) {
+export function parseDateValue(value: number | string | dayjs.Dayjs | Date) {
     if (value instanceof Date || typeof value === 'number') {
-        value = moment(value);
+        value = dayjs(value);
     } else if (typeof value === 'string') {
-        value = moment(value, [
+        value = dayjs(value, [
             'YYYY-MM-DD',
             'YYYYMMDD',
             'YYYY-MM-DDTHH:mm:ss.SSS',

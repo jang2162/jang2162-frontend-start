@@ -8,8 +8,8 @@
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:import/typescript",
-        "prettier/@typescript-eslint",
-        "prettier"
+        "prettier",
+        "next"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -33,6 +33,7 @@
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-empty-interface": "error",
+        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/quotes": [
             "error",

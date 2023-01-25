@@ -17,7 +17,7 @@ class IntrospectionUtil {
         const newVariables: Record<string, any> = {};
         for (const definition of query.definitions) {
             if (definition.kind === 'OperationDefinition' && definition?.variableDefinitions) {
-                for (const variableDefinition of definition?.variableDefinitions) {
+                for (const variableDefinition of definition?.variableDefinitions || []) {
                     const valueKey = variableDefinition.variable.name.value;
                     newVariables[valueKey] = this.serializeFromAST(variables[valueKey], variableDefinition.type, false, !!variableDefinition.defaultValue);
                 }
@@ -26,15 +26,17 @@ class IntrospectionUtil {
         return newVariables;
     }
 
-    parseData(data?: Record<string, any>) {
+    parseData(data?: any) {
         if (!data) {
             return data;
         }
         const returnData: any = {};
         for (const i in data) {
-            returnData[i] = Array.isArray(data[i]) ?
-                data[i].map((item: any) => this.parseObject(item)) :
-                this.parseObject(data[i]);
+            if (Array.isArray(data[i])) {
+                returnData[i] = new Array(data[i] as any).map((item: any) => this.parseObject(item))
+            } else {
+                returnData[i] = this.parseObject(data[i])
+            }
         }
         return returnData;
     }
@@ -154,6 +156,6 @@ class IntrospectionUtil {
 declare const INTROSPECTION_DATA: any;
 export const introspectionUtil = new IntrospectionUtil(INTROSPECTION_DATA)
 
-introspectionUtil.addScalar<Date>('Date', value => parseDateValue(value).set(({h:0, m:0, s:0, ms:0})).toDate(), value => parseDateValue(value).format('YYYY-MM-DD'));
+introspectionUtil.addScalar<Date>('Date', value => parseDateValue(value).startOf('date').toDate(), value => parseDateValue(value).format('YYYY-MM-DD'));
 
 
