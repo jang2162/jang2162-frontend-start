@@ -10,6 +10,7 @@ generates:
       scalars:
         Date: Date
         DateTime: Date
+        Timestamp: Date
   ./introspection.json:
     plugins:
       - introspection
