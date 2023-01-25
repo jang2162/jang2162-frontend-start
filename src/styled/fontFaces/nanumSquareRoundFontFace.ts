@@ -34,8 +34,8 @@ export default css.global`
  src: url(${NanumSquareRoundREot});
  src: local('NanumSquareRoundR'),
       url(${NanumSquareRoundREot}?#iefix) format('embedded-opentype'),
-      url(${NanumSquareRoundRWoff}) format('woff2'),
-      url(${NanumSquareRoundRWoff2}) format('woff'),
+      url(${NanumSquareRoundRWoff2}) format('woff2'),
+      url(${NanumSquareRoundRWoff}) format('woff'),
       url(${NanumSquareRoundRTtf}) format('truetype');
 }
 @font-face {
