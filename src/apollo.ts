@@ -113,7 +113,6 @@ function getLink() {
     ])
 }
 
-let _apolloClient: ApolloClient<any>;
 function createApolloClient() {
     const link = getLink();
     return new ApolloClient({
@@ -122,23 +121,9 @@ function createApolloClient() {
         cache: new InMemoryCache(),
     })
 }
-
-export function initializeApollo(initialState = null) {
+let _apolloClient: ApolloClient<any>;
+export function getApolloClient() {
     const curApolloClient = _apolloClient || createApolloClient()
-
-    // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-    // gets hydrated here
-    if (initialState) {
-        curApolloClient.cache.restore(initialState)
-    }
-    // For SSG and SSR always create a new Apollo Client
-    if (!isBrowser) { return curApolloClient }
-    // Create the Apollo Client once in the client
     if (!_apolloClient) { _apolloClient = curApolloClient }
-
     return curApolloClient
-}
-
-export function useApollo(initialState: any) {
-    return useMemo(() => initializeApollo(initialState), [initialState])
 }

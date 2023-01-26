@@ -1,7 +1,7 @@
 import {gql} from '@apollo/client';
 import dayjs from 'dayjs';
 
-import {DateTest, SamplePostConnection, Scalars} from '@/generated-models'
+import {Scalars} from '@/generated-models'
 import {Service} from '@/lib/Service';
 
 export const testService = new Service();
@@ -46,16 +46,11 @@ export const SAMPLE_USER_BY_ID = gql`
 
 
 testService.addQuerySimple(SAMPLE_USER_BY_ID, (ctx) => {
-    const query = ctx.getData<{samplePosts: SamplePostConnection}>(SAMPLE_POST_BY_ID);
-    if (query?.samplePosts?.list?.[0]?.writer_id) {
-        return {variables: {id: query?.samplePosts?.list?.[0]?.writer_id}};
-    }
+
     return null;
 });
 
 testService.addQuerySimple<{
-    dates: DateTest,
-    dates2: DateTest[],
     date1?: Scalars['Date']
     date2: Array<any | undefined>
 }>(SAMPLE_POST_BY_ID, (ctx) => ({

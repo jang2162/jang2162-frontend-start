@@ -6,7 +6,7 @@ import {DocumentNode} from 'graphql';
 import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
 
-import {initializeApollo} from '@/apollo';
+import {getApolloClient} from '@/apollo';
 import {introspectionUtil} from '@/lib/introspection/util';
 
 
@@ -70,7 +70,7 @@ export class Service {
             }
         }
 
-        const apolloClient = initializeApollo();
+        const apolloClient = getApolloClient();
         for (const item of items) {
             let variables;
             let context;

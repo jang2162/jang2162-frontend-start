@@ -9,6 +9,7 @@ export class Env {
 }
 
 
+
 function envString(value: string | undefined, defaultValue: string): string {
     return value ?? defaultValue;
 }
@@ -29,10 +30,6 @@ function envIntErr(value: string | undefined): number {
     }
     return parseInt(value, 10);
 }
-function envIntOptional(value: string | undefined): number | undefined {
-    return value === undefined ? value : parseInt(value, 10);
-}
-
 function envFloat(value: string | undefined, defaultValue: number): number {
     return value === undefined ? defaultValue : parseFloat(value);
 }
@@ -41,9 +38,9 @@ function envFloatErr(value: string | undefined): number {
         throw new Error('Empty environment given.');
     }
     return parseFloat(value);
+}function envBool(value: string | undefined, defaultValue?: boolean): boolean {
+    if (value && ['true', 'false'].indexOf(value.toLowerCase()) > 0) {
+        return value.toLowerCase() === 'true'
+    }
+    throw new Error('invalid boolean value environment given.');
 }
-function envFloatOptional(value: string | undefined): number | undefined {
-    return value === undefined ? value : parseFloat(value);
-}
-
-
