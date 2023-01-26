@@ -1,8 +1,8 @@
 import React from 'react'
-import StyledJsxRegistry from 'app/styledJsxRegistry';
-import {GlobalStyled} from '@/styled/GlobalStyled';
-import RecoilRegistry from 'app/recoilRegistry';
+
 import ApolloRegistry from 'app/apolloRegistry';
+import RecoilRegistry from 'app/recoilRegistry';
+import StyledJsxRegistry from 'app/styledJsxRegistry';
 
 export default function Layout({ children }: {
     children: React.ReactNode;

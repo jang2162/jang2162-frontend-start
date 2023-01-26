@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+
 import {RecoilRoot} from 'recoil';
 
 export default function RecoilRegistry({children}: {

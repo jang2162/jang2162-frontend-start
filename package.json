@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.5",
+    "@next/font": "^13.1.5",
     "clone": "^2.1.2",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.7",
@@ -21,7 +22,7 @@
     "styled-jsx": "^5.1.2"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "generate": "graphql-codegen",
     "build": "next build",
     "init": "graphql-codegen && next build",
@@ -30,6 +31,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "type": "module",
   "browserslist": [
     ">0.2%",
     "not dead",

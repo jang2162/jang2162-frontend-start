@@ -1,14 +1,9 @@
-'use client';
-
+import React from 'react';
 
 import Link from 'next/link';
-import {usePathname} from 'next/navigation';
 export default function Template({ children }: {
     children: React.ReactNode
 }) {
-    console.log(2222);
-    const pathname = usePathname()
-
     return <div>
 
         <Link href="/">Home</Link>

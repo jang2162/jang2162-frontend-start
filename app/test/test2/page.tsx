@@ -1,6 +1,7 @@
 import React from 'react'
-import Aaa from 'app/test/test2/aaa';
+
 import {getApolloClient} from '@/apollo';
+import Aaa from 'app/test/test2/aaa';
 async function getData() {
     const apollo = getApolloClient()
     return [1,2,3];

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import { useServerInsertedHTML } from 'next/navigation';
 import { StyleRegistry, createStyleRegistry } from 'styled-jsx';
+
 import {GlobalStyled} from '@/styled/GlobalStyled';
 
 export default function StyledJsxRegistry({children}: {

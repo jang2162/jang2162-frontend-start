@@ -1,12 +1,12 @@
 import React from 'react'
 
-import nanumSquareFontFace from '@/styled/fontFaces/nanumSquareFontFace';
-import nanumSquareRoundFontFace from '@/styled/fontFaces/nanumSquareRoundFontFace';
+// import nanumSquareFontFace from '@/styled/fontFaces/nanumSquareFontFace';
+// import nanumSquareRoundFontFace from '@/styled/fontFaces/nanumSquareRoundFontFace';
 
 export const GlobalStyled = () => (<>
     {/* FontFaces */}
-    <style jsx global>{nanumSquareFontFace}</style>
-    <style jsx global>{nanumSquareRoundFontFace}</style>
+    {/*<style jsx global>{nanumSquareFontFace}</style>*/}
+    {/*<style jsx global>{nanumSquareRoundFontFace}</style>*/}
 
     {/* normalize.css */}
     <style jsx global>{`
