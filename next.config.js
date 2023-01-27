@@ -1,9 +1,7 @@
-// import path from  'path'
-// import Dotenv from  'dotenv-webpack'
-// import webpack from  'webpack'
-// import fs from  'fs'
-
-export default {
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
     experimental: {
         appDir: true,
     },
@@ -38,3 +36,5 @@ export default {
     //     }
     // }
 }
+
+module.exports = nextConfig

@@ -1,11 +1,8 @@
-- tailwindcss
-- alias 
 - fonts
+- Dotenv
 - DefinePlugin
 - apollo
-- 
-- 
-- 
+
 - 상태관리
 
 - react-spring, styled-component 정리

@@ -2,7 +2,6 @@ import React from 'react';
 
 import Head from 'next/head';
 
-import {useTheme} from '@/styled/themes';
 import StyledTest from '@/templates/sample/StyledTest';
 
 
