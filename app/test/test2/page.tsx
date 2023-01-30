@@ -1,19 +1,17 @@
 import React from 'react'
 
 import {getApolloClient} from '@/apollo';
-import Aaa from 'app/test/test2/aaa';
+import {selectNowDates} from '@/services/testService';
 async function getData() {
-    const apollo = getApolloClient()
-    return [1,2,3];
+    return selectNowDates.query();
 }
 
 export default async function Page() {
     const data = await getData()
+    console.log(data);
     return (
         <>
-            {data.map(item => (<div key={item}>{item}</div>))}
-            <Aaa/>
-            테스트2페이지
+
         </>
     );
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import '@/styled/global.css'
+import ApolloRegistry from '@/registry/apolloRegistry';
+import RecoilRegistry from '@/registry/recoilRegistry';
+import StyledJsxRegistry from '@/registry/styledJsxRegistry';
 import {pretendardFont} from '@/styled/fontFaces/pretendardFontFace';
-import ApolloRegistry from 'app/apolloRegistry';
-import RecoilRegistry from 'app/recoilRegistry';
-import StyledJsxRegistry from 'app/styledJsxRegistry';
 
 export default function Layout({ children }: {
     children: React.ReactNode;

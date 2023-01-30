@@ -24,7 +24,7 @@ export class IntrospectionUtil {
         return newVariables;
     }
 
-    parseData(data?: any) {
+    parseData(data: any, query: DocumentNode) {
         if (!data) {
             return data;
         }

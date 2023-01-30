@@ -9,7 +9,7 @@ generates:
       maybeValue: T | null | undefined
       scalars:
         Date: Date
-        DateTime: Date
+        Datetime: Date
         Timestamp: Date
   ./introspection.json:
     plugins:

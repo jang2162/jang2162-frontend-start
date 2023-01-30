@@ -5,143 +5,71 @@ schema {
     mutation: Mutation
 }
 
+type CursorPageInfo {
+    hasMore: Boolean!
+    next: String
+    prev: String
+    totalCount: Int!
+}
+
 type Mutation {
-    addSampleUser(user: SampleUserInput!): SampleUser
-    addUser(user: UserInput!): User!
     authentication(id: String!, pw: String!): String
+    insertTempPost(content: String!, title: String!, writerId: Int!): Void
+    insertTempUser(birth: Date!, name: String!): Void
     invalidate: String
     refreshToken: String
 }
 
-type PageInfo {
-    direction: DIRECTION_TYPE!
-    hasNext: Boolean!
-    hasPrev: Boolean!
-    next: String
-    prev: String
-    sort: SORT_TYPE!
-    sortBy: String!
-    totalCount: Int!
-}
-
 type Query {
-    samplePostById(id: ID!): SamplePost
-    samplePosts(form: SamplePostForm): SamplePostConnection!
-    sampleUserById(id: ID!): SampleUser
-    sampleUsers(form: SampleUserForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, name : ""}): SampleUserConnection!
-    userById(id: ID!): User
-    users(form: UserForm = {page : {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}, name : ""}): UserConnection!
+    nowDate: Date
+    nowDatetime: Datetime
+    nowTimestamp: Timestamp
+    selectPostById(id: Int!): TempPost!
+    selectPosts: [TempPost!]!
+    selectUserById(id: Int!): TempUser!
+    selectUsers: [TempUser!]!
 }
 
-type SamplePost {
-    content: String
+type TempPost {
+    content: String!
     id: ID!
-    subject: String!
-    writer: SampleUser!
-    writer_id: ID!
+    postId: Int!
+    regDate: Date!
+    title: String!
+    writer: TempUser!
+    writerId: Int!
 }
 
-type SamplePostConnection {
-    list: [SamplePost!]!
-    pageInfo: PageInfo!
-}
-
-type SampleUser {
-    birthday: Date
+type TempUser {
+    birth: Date!
     id: ID!
     name: String!
-    posts(page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}): SamplePostConnection
-}
-
-type SampleUserConnection {
-    list: [SampleUser!]
-    pageInfo: PageInfo!
-}
-
-type User {
-    birthday: Date
-    createDate: Date!
-    id: ID!
-    loginId: String!
-    name: String!
-}
-
-type UserConnection {
-    list: [User!]
-    pageInfo: PageInfo!
+    posts: [TempPost!]!
+    userId: Int!
 }
 
 type accessToken {
     token: String!
 }
 
-enum CacheControlScope {
-    PRIVATE
-    PUBLIC
-}
-
-enum DIRECTION_TYPE {
-    NEXT
-    PREV
-}
-
-enum SORT_TYPE {
-    ASC
-    DESC
-}
-
-input DateTest {
-    dt: Date!
-}
-
-input PageInput {
-    cursor: String = ""
-    direction: DIRECTION_TYPE = NEXT
-    size: Int = 15
-    sort: SORT_TYPE = DESC
-    sortBy: String = "ID"
-}
-
-input SamplePostForm {
-    date1: DateTest
-    date2: [DateTest]
-    date3: [Date]
-    date4: [Date]!
-    date5: [Date!]
-    date6: [Date!]!
-    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
-    searchKeyword: String = ""
-    userId: String = ""
-}
-
-input SampleUserForm {
-    name: String = ""
-    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
-}
-
-input SampleUserInput {
-    birthday: Date
-    name: String!
-}
-
-input UserForm {
-    name: String = ""
-    page: PageInput = {cursor : "", size : 15, sortBy : "ID", sort : DESC, direction : NEXT}
-}
-
-input UserInput {
-    birthday: Date
-    loginId: String!
-    name: String!
-    password: String!
-}
-
-
 "Date scalar type"
 scalar Date
 
-"DateTime scalar type"
-scalar DateTime
+"Datetime scalar type"
+scalar Datetime
 
-"The `Upload` scalar type represents a file upload."
-scalar Upload
+"Timestamp scalar type"
+scalar Timestamp
+
+"Represents NULL values"
+scalar Void
+
+input CursorPageInput {
+    cursor: String
+    size: Int
+}
+
+input OffsetPageInput {
+    pageIndex: Int
+    size: Int
+}

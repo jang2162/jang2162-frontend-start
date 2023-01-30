@@ -1,261 +1,102 @@
-import {useMemo, useState} from 'react';
+import {gql, SubscriptionHookOptions, useLazyQuery, useMutation, useQuery, useSubscription} from '@apollo/client';
 
-import {useQuery} from '@apollo/client';
-
+import {QueryOptions} from '@apollo/client/core/watchQueryOptions';
+import {LazyQueryHookOptions, MutationHookOptions, QueryHookOptions} from '@apollo/client/react/types/types';
 import {DocumentNode} from 'graphql';
-import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
-import {useRouter} from 'next/router';
 
 import {getApolloClient} from '@/apollo';
 import {introspectionUtil} from '@/introspection';
 
 
-class ServiceNotFoundError extends Error {
-    constructor(private _target: string | symbol | DocumentNode) {
-        super('ServiceNotFoundError');
-        this.name = 'ServiceNotFoundError';
+class GqlService<T, TVariables> {
+    constructor(private documentNode: DocumentNode) {}
+
+    getDocumentNode(){
+        return this.documentNode;
     }
 
-    get target(): string | symbol | DocumentNode {
-        return this._target;
+    async query(options?: {variables: TVariables} & Omit<QueryOptions, 'query'|'variables'>){
+        const client = getApolloClient()
+        const result = await client.query<T>({
+            ...options,
+            variables: options?.variables ? introspectionUtil.serialize(options as any, this.documentNode) : undefined,
+            query: this.documentNode
+        });
+        if (result.data) {
+            return {
+                ...result
+                , data: introspectionUtil.parseData(result.data, this.documentNode)
+            }
+        } else {
+            return result
+        }
     }
 }
 
-interface ServiceContext<T = any> {
-    params: T;
-    getData<U=any>(name: string | symbol | DocumentNode): U;
-}
 
-interface Options<T=any> {
-    variables?: T,
-    context?: any
-}
+export const makeGqlService = <T, TVariables = undefined>(documentNode: DocumentNode) => new GqlService<T, TVariables>(documentNode)
 
-type OptionsOrFn<T=any> = Options<T> | ((ctx: ServiceContext) => null | Options<T>);
-
-type ServiceData = Array<{
-    name: string | symbol | DocumentNode,
-    query: DocumentNode,
-    options?: OptionsOrFn,
-    data?: any,
-    keep: Array<string | symbol | DocumentNode>,
-    isEnd: boolean,
-}>;
-
-export class Service {
-    private queries: Array<{ name: string | symbol | DocumentNode, query: DocumentNode, options?: OptionsOrFn }> = [];
-
-    getServiceData(): ServiceData {
-        return this.queries.map(item => ({
-            ...item,
-            keep: [],
-            data: undefined,
-            isEnd: false
-        }));
-    }
-
-    async loadData(propsContext: GetServerSidePropsContext | (GetStaticPropsContext & {req?: any, res?: any})) {
-        const items = this.getServiceData();
-        const token = propsContext?.req?.cookies?.token;
-        const pageResponse = propsContext?.res;
-        const ctx: ServiceContext = {
-            params: propsContext.params,
-            getData: (name: string | symbol | DocumentNode) => {
-                const targetItem = items.find(_item => _item.name === name);
-                if (targetItem?.isEnd) {
-                    return targetItem.data;
-                } else {
-                    throw new ServiceNotFoundError(name);
-                }
-            }
-        }
-
-        const apolloClient = getApolloClient();
-        for (const item of items) {
-            let variables;
-            let context;
-            let isSkip = false;
-
-            if (typeof item.options === 'function') {
-                try {
-                    const options = item.options(ctx);
-                    if (options !== null) {
-                        variables = options.variables
-                        context = {
-                            ...options.context,
-                            token,
-                            pageResponse,
-                        }
-                    } else {
-                        isSkip = true;
-                    }
-
-                } catch (e) {
-                    if ((e as Error).name === 'ServiceNotFoundError') {
-                        const err = e as ServiceNotFoundError;
-                        const targetItem = items.find(_item => _item.name === err.target);
-                        if (targetItem && !targetItem.isEnd) {
-                            targetItem.keep.push(item.name);
-                            continue;
-                        } else {
-                            throw e;
-                        }
-                    } else {
-                        throw e;
-                    }
-                }
-            } else {
-                variables = item?.options?.variables
-                context = {
-                    ...item?.options?.context,
-                    token,
-                    pageResponse,
-                }
-            }
-
-            if (!isSkip) {
-                if (variables) {
-                    variables = introspectionUtil.serialize(variables, item.query);
-                }
-
-                const {data} = await apolloClient.query({
-                    variables,
-                    context,
-                    query: item.query
-                });
-                item.data = introspectionUtil.parseData(data);
-            }
-
-            item.isEnd = true;
-            for (const keepName of item.keep) {
-                const curItem = items.find(_item => _item.name === keepName);
-                if (!curItem || typeof curItem.options !== 'function') {
-                    continue;
-                }
-                try {
-                    const options = curItem.options(ctx);
-                    if (options !== null) {
-                        const {data} = await apolloClient.query({
-                            variables: introspectionUtil.serialize(options.variables, curItem.query),
-                            context: {
-                                ...options.context,
-                                token,
-                                pageResponse,
-                            },
-                            query: curItem.query
-                        });
-                        curItem.data = introspectionUtil.parseData(data);
-                    }
-                    curItem.isEnd = true;
-                } catch (e) {
-                    if ((e as Error).name === 'ServiceNotFoundError') {
-                        const err = e as ServiceNotFoundError;
-                        const targetItem = items.find(_item => _item.name === err.target);
-                        if (targetItem && !targetItem.isEnd) {
-                            targetItem.keep.push(keepName);
-                        } else {
-                            throw e;
-                        }
-                    } else {
-                        throw e;
-                    }
-                }
-            }
-        }
-        return apolloClient.cache.extract();
-    }
-
-    addQuery<T=any>(name: string | symbol | DocumentNode, query?: DocumentNode, options?: OptionsOrFn<T>) {
-        if (typeof name !== 'string' && typeof name !== 'symbol') {
-            query = name;
-        }
-
-        if (query) {
-            if (typeof options !== 'function' && options?.variables) {
-                (options as Options).variables = introspectionUtil.serialize(options.variables, query);
-            }
-            this.queries.push({ name, query, options});
-        }
-    }
-
-    addQuerySimple<T=any>(query: DocumentNode, options?: OptionsOrFn<T>) {
-        this.addQuery<T>(query, query, options);
-    }
-}
-
-export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string | symbol | DocumentNode) => {
-    const router = useRouter();
-    const params = router.query;
-    const curItem = serviceData.find(_item => _item.name === name);
-
-    if (!curItem) {
-        throw new Error(`useServiceData: ${name.toString()} is not found`)
-    }
-    let options: Options = {};
-    let skip = false;
-    if (typeof curItem.options === 'function') {
-        const ctx: ServiceContext = {
-            params,
-            getData: (_name: string | symbol | DocumentNode) => {
-                const targetItem = serviceData.find(_item => _item.name === _name);
-                if (targetItem && targetItem.isEnd) {
-                    return targetItem.data;
-                } else {
-                    throw new ServiceNotFoundError(_name);
-                }
-            }
-        }
-        try {
-            const _options = curItem.options(ctx);
-            if (_options === null) {
-                curItem.isEnd = true;
-                skip = true;
-            } else {
-                options = _options;
-                if (options.variables) {
-                    options.variables = introspectionUtil.serialize(options.variables, curItem.query)
-                }
-            }
-        } catch (e) {
-            if ((e as Error).name === 'ServiceNotFoundError') {
-                const err = e as ServiceNotFoundError;
-                const targetItem = serviceData.find(_item => _item.name === err.target);
-                if (targetItem && !targetItem.isEnd) {
-                    skip = true;
-                } else {
-                    throw e;
-                }
-            } else {
-                throw e;
-            }
-        }
-    } else if (curItem.options){
-        options = curItem.options;
-    }
-    const query = useQuery<T>(curItem.query, {
+export function useGqlServiceQuery<T, TVariables>(gqlService: GqlService<T, TVariables>, options?: QueryHookOptions) {
+    const documentNode = gqlService.getDocumentNode();
+    const result = useQuery(documentNode, {
         ...options,
-        skip
+        variables: options?.variables ? introspectionUtil.serialize(options as any, documentNode) : undefined
     });
-    const [oldQuery, setOldQuery] = useState(query);
-    const [data, setData] = useState();
-    const [loading, setLoading] = useState(true);
-    useMemo(() => {
-        setLoading(true);
-        setOldQuery(query);
-        if (!query.loading) {
-            curItem.isEnd = true;
+    if (result.data) {
+        return {
+            ...result
+            , data: introspectionUtil.parseData(result.data, documentNode)
         }
-
-        if (!query.error) {
-            curItem.data = introspectionUtil.parseData(query.data);
-            setLoading(false);
-            setData(curItem.data);
-        }
-    }, [query, curItem]);
-
-    return {
-        ...query,
-        ready: !(loading || query.loading || oldQuery !== query),
-        data
-    };
+    } else {
+        return result
+    }
 }
+export function useGqlServiceLazyQuery<T, TVariables>(gqlService: GqlService<T, TVariables>, options?: LazyQueryHookOptions) {
+    const documentNode = gqlService.getDocumentNode();
+    const result = useLazyQuery(documentNode, {
+        ...options,
+        variables: options?.variables ? introspectionUtil.serialize(options as any, documentNode) : undefined
+    });
+    if (result[1].data) {
+        return [result[0], {
+            ...result[1]
+            , data: introspectionUtil.parseData(result[1].data, documentNode)
+        }]
+    } else {
+        return result
+    }
+}
+
+
+export function useGqlServiceMutation<T, TVariables>(gqlService: GqlService<T, TVariables>, options?: MutationHookOptions) {
+    const documentNode = gqlService.getDocumentNode();
+    const result = useMutation(documentNode, {
+        ...options,
+        variables: options?.variables ? introspectionUtil.serialize(options as any, documentNode) : undefined
+    });
+    if (result[1].data) {
+        return [result[0], {
+            ...result[1]
+            , data: introspectionUtil.parseData(result[1].data, documentNode)
+        }]
+    } else {
+        return result
+    }
+}
+
+export function useGqlServiceSubscription<T, TVariables>(gqlService: GqlService<T, TVariables>, options?: SubscriptionHookOptions) {
+    const documentNode = gqlService.getDocumentNode();
+    const result = useSubscription(documentNode, {
+        ...options,
+        variables: options?.variables ? introspectionUtil.serialize(options as any, documentNode) : undefined
+    });
+    if (result.data) {
+        return {
+            ...result
+            , data: introspectionUtil.parseData(result.data, documentNode)
+        }
+    } else {
+        return result
+    }
+}
+
