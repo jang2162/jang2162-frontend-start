@@ -21,10 +21,11 @@ export default function Page() {
             <h1 className="text-sm font-bold underline">
                 Hello, Next.js!
             </h1>
-            <h1 className="text-sm font-black underline">
+            <h1 className="text-sm font-extrabold underline">
                 Hello, Next.js!
             </h1>
-            <h1 className="text-sm font-extrabold underline">
+
+            <h1 className="text-sm font-black underline">
                 Hello, Next.js!
             </h1>
             <Link href="/test">Test</Link>
