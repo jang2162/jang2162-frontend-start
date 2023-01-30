@@ -1,5 +1,3 @@
-import {useMemo} from 'react'
-
 import {ServerResponse} from 'http';
 
 import {ApolloClient, ApolloLink, gql, HttpLink, InMemoryCache} from '@apollo/client';
@@ -8,6 +6,8 @@ import {parse as parseSetCookie} from 'set-cookie-parser';
 import {Observable} from 'zen-observable-ts';
 
 import {isBrowser} from './lib/utils';
+
+import {Env} from '@/env';
 
 export const REFRESH_TOKEN = gql`
     mutation{
@@ -99,9 +99,8 @@ const authLink = new ApolloLink((operation, forward) => {
         }
     });
 });
-
 const httpLink = new HttpLink({
-    uri: process.env.GRAPHQL_URL,
+    uri: Env.GRAPHQL_URL,
     credentials: 'include'
 });
 

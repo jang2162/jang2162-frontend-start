@@ -1,6 +1,3 @@
-- fonts
-- Dotenv
-- DefinePlugin
 - apollo
 
 - 상태관리

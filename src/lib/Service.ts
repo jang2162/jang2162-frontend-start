@@ -7,7 +7,7 @@ import {GetServerSidePropsContext, GetStaticPropsContext} from 'next';
 import {useRouter} from 'next/router';
 
 import {getApolloClient} from '@/apollo';
-import {introspectionUtil} from '@/lib/introspection/util';
+import {introspectionUtil} from '@/introspection';
 
 
 class ServiceNotFoundError extends Error {
@@ -181,11 +181,6 @@ export class Service {
     addQuerySimple<T=any>(query: DocumentNode, options?: OptionsOrFn<T>) {
         this.addQuery<T>(query, query, options);
     }
-}
-
-export const useServiceData = (service: Service) => {
-    const serviceData = useMemo(() => service.getServiceData(), [service]);
-    return serviceData;
 }
 
 export const useServiceQuery = <T = any>(serviceData: ServiceData, name: string | symbol | DocumentNode) => {

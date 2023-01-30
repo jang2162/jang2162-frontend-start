@@ -1,7 +1,5 @@
-import {GraphQLError} from 'graphql';
+import {GraphQLError, GraphQLScalarType} from 'graphql';
 import {DocumentNode, TypeNode} from 'graphql/language/ast';
-
-import {parseDateValue} from './scalar/DateScalar';
 
 interface IntersectionType {
     kind: string
@@ -9,8 +7,8 @@ interface IntersectionType {
     ofType?: IntersectionType
 }
 
-class IntrospectionUtil {
-    private items: Array<{name: string, parse: (value: string) => any, serialize: (value: any) => string}> = [];
+export class IntrospectionUtil {
+    private items: Array<GraphQLScalarType> = [];
     constructor(private introspectionData: any) {}
 
     serialize(variables: Record<string, any>, query: DocumentNode) {
@@ -41,8 +39,8 @@ class IntrospectionUtil {
         return returnData;
     }
 
-    addScalar<T=any>(name: string, parse: (value: string) => T, serialize: (value: T) => string) {
-        this.items.push({name, parse, serialize});
+    addScalar(scalar: GraphQLScalarType) {
+        this.items.push(scalar);
     }
 
     private parseObject(data: Record<string, any>) {
@@ -81,7 +79,7 @@ class IntrospectionUtil {
     private parseScalar(value: any, name: string) {
         const scalarItem = this.items.find((item: any) => item.name === name);
         if (scalarItem) {
-            return scalarItem.parse(value);
+            return scalarItem.parseValue(value);
         }
         return value;
     }
@@ -153,9 +151,3 @@ class IntrospectionUtil {
         return value;
     }
 }
-declare const INTROSPECTION_DATA: any;
-export const introspectionUtil = new IntrospectionUtil(INTROSPECTION_DATA)
-
-introspectionUtil.addScalar<Date>('Date', value => parseDateValue(value).startOf('date').toDate(), value => parseDateValue(value).format('YYYY-MM-DD'));
-
-
