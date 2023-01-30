@@ -1,5 +1,5 @@
 function _range(startOrEnd: number, end?: number, step?: number) {
-    let start = 0;
+    let start;
     if (end === undefined) {
         [start, end, step] = [0, startOrEnd, startOrEnd > 0 ? 1 : -1];
     } else {
