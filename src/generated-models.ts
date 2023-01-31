@@ -11,7 +11,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: Date;
-  Datetime: any;
+  Datetime: Date;
   Timestamp: Date;
   Void: any;
 };
@@ -65,6 +65,11 @@ export type OffsetPageInput = {
 export type Query = {
   __typename?: 'Query';
   nowDate?: Maybe<Scalars['Date']>;
+  nowDateArr?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nowDateArrNN: Array<Maybe<Scalars['Date']>>;
+  nowDateNN: Scalars['Date'];
+  nowDateNNArr?: Maybe<Array<Scalars['Date']>>;
+  nowDateNNArrNN: Array<Scalars['Date']>;
   nowDatetime?: Maybe<Scalars['Datetime']>;
   nowTimestamp?: Maybe<Scalars['Timestamp']>;
   selectPostById: TempPost;

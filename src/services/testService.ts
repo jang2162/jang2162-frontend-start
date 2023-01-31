@@ -1,33 +1,31 @@
-/*
-* A      OBJECT
-* A!     NON_NULL_OBJECT
-* [A]    LIST_OBJECT
-* [A]!   NON_NULL_LIST_OBJECT
-* [A!]   LIST_NON_NULL_OBJECT
-* [A!]!  NON_NULL_LIST_NON_NULL_OBJECT
-*
-* */
-
-
 import {gql} from '@apollo/client';
 
 import {Query, Mutation, Scalars, Maybe} from '@/generated-models';
-import {makeGqlService} from '@/lib/Service';
+import {makeGqlService} from '@/lib/gqlService';
 
 export const selectNowDates = makeGqlService<{
     nowDate: Query['nowDate']
+    nowDateNN: Query['nowDateNN']
+    nowDateArr: Query['nowDateArr']
+    nowDateArrNN: Query['nowDateArrNN']
+    nowDateNNArrNN: Query['nowDateNNArrNN']
+    nowDateNNArr: Query['nowDateNNArr']
     nowDatetime: Query['nowDatetime']
     nowDate2: Query['nowDate']
     nowDatetime2: Query['nowDatetime']
 }>(gql`
     query {
         nowDate
+        nowDateNN
+        nowDateArr
+        nowDateArrNN
+        nowDateNNArrNN
+        nowDateNNArr
         nowDatetime
         nowDate2: nowDate
         nowDatetime2: nowDatetime
     }
 `)
-
 
 export const insertUser = makeGqlService<{
     aa: Mutation['insertTempUser']
@@ -40,11 +38,14 @@ export const insertUser = makeGqlService<{
 export const selectUser = makeGqlService<{
     aad: Query['selectUserById']
 }, {id: Scalars['Int']}>(gql`
+    fragment tempUserFields on TempUser {
+        userId
+        birth
+        name
+    }
     query ($id: Int!){
         aad: selectUserById(id: $id) {
-            name
-            birth
-            userId
+            ...tempUserFields
         }
     }
 `)

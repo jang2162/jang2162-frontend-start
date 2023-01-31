@@ -22,6 +22,11 @@ type Mutation {
 
 type Query {
     nowDate: Date
+    nowDateArr: [Date]
+    nowDateArrNN: [Date]!
+    nowDateNN: Date!
+    nowDateNNArr: [Date!]
+    nowDateNNArrNN: [Date!]!
     nowDatetime: Datetime
     nowTimestamp: Timestamp
     selectPostById(id: Int!): TempPost!

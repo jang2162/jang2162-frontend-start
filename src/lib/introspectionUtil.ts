@@ -1,16 +1,16 @@
-import {GraphQLError, GraphQLScalarType} from 'graphql';
+import {GraphQLError, GraphQLScalarType, IntrospectionInputObjectType} from 'graphql';
 import {DocumentNode, TypeNode} from 'graphql/language/ast';
-
-interface IntersectionType {
-    kind: string
-    name: string
-    ofType?: IntersectionType
-}
+import {
+    IntrospectionInputTypeRef, IntrospectionOutputTypeRef,
+    IntrospectionQuery
+} from 'graphql/utilities/getIntrospectionQuery';
 
 export class IntrospectionUtil {
     private items: Array<GraphQLScalarType> = [];
-    constructor(private introspectionData: any) {}
-
+    constructor(private introspectionData: IntrospectionQuery) {}
+    addScalar(scalar: GraphQLScalarType) {
+        this.items.push(scalar);
+    }
     serialize(variables: Record<string, any>, query: DocumentNode) {
         const newVariables: Record<string, any> = {};
         for (const definition of query.definitions) {
@@ -29,63 +29,41 @@ export class IntrospectionUtil {
             return data;
         }
         const returnData: any = {};
-        for (const i in data) {
-            if (Array.isArray(data[i])) {
-                returnData[i] = new Array(data[i] as any).map((item: any) => this.parseObject(item))
-            } else {
-                returnData[i] = this.parseObject(data[i])
-            }
-        }
-        return returnData;
-    }
 
-    addScalar(scalar: GraphQLScalarType) {
-        this.items.push(scalar);
-    }
+        for (const definition of query.definitions) {
+            if(definition.kind === 'OperationDefinition') {
+                const operation = definition.operation
+                const introspectionType = this.introspectionData.__schema.types.find(item =>
+                    item.kind === 'OBJECT' && item.name === ({query: 'Query', mutation: 'Mutation', subscription: 'Subscription'})[operation]
+                )
 
-    private parseObject(data: Record<string, any>) {
-        const type = this.introspectionData.__schema.types.find((item: any) => item.name === data.__typename && item.kind === 'OBJECT');
-        const returnData: any = {};
-        for (const field of type.fields) {
-            if (field.name in data) {
-                returnData[field.name] = this.parseObjectField(data[field.name], field.type, false);
-            }
-        }
-        return returnData;
-    }
+                if (!introspectionType || introspectionType.kind !== 'OBJECT') {
+                    throw new Error(`introspectionType ${operation}`)
+                }
 
-    private parseObjectField(value: any, type: IntersectionType, isNonNull: boolean): any  {
-        if (type.kind === 'SCALAR') {
-            if (value || isNonNull) {
-                return this.parseScalar(value, type.name);
-            }
-        } else if (type.kind === 'OBJECT') {
-            if (value || isNonNull) {
-                return this.parseObject(value);
-            }
-        } else if (type.ofType) {
-            const ofType = type.ofType;
-            if (type.kind === 'NON_NULL') {
-                return this.parseObjectField(value, ofType, true);
-            } else if (type.kind === 'LIST') {
-                if (Array.isArray(value)) {
-                    return value.map(item => this.parseObjectField(item, ofType, false))
+                for(const selection of definition.selectionSet.selections) {
+                    console.log(selection);
+                    if (selection.kind === 'Field') {
+                        const name = selection.name.value
+                        const alias = selection.alias?.value || name
+                        const value = data[alias]
+                        const type = introspectionType.fields.find(item => item.name === name)
+                        if (!type) {
+                            throw new Error(`type: ${name}`)
+                        }
+                        returnData[alias] = this.parseObjectField(value, type.type, false);
+                    }
                 }
             }
         }
-        return value;
-    }
-
-    private parseScalar(value: any, name: string) {
-        const scalarItem = this.items.find((item: any) => item.name === name);
-        if (scalarItem) {
-            return scalarItem.parseValue(value);
-        }
-        return value;
+        return returnData;
     }
 
     private serializeFromIntrospection(value: any, name: string) {
         const type = this.introspectionData.__schema.types.find((item: any) => item.name === name);
+        if (!type) {
+            throw new Error(`type: ${name}`)
+        }
         if (type.kind === 'SCALAR') {
             return this.serializeScalar(value, name);
         } else if (type.kind === 'INPUT_OBJECT') {
@@ -94,33 +72,34 @@ export class IntrospectionUtil {
         return value;
     }
 
-    private serializeInputObject(value: any, type: any): any {
+    private serializeInputObject(value: any, type: IntrospectionInputObjectType): any {
         for (const field of type.inputFields) {
-            if (field.name in value || !type.defaultValue ) {
+            if (field.name in value) {
                 value[field.name] = this.serializeInputObjectField(value[field.name], field.type, false);
             }
         }
         return value;
     }
 
-    private serializeInputObjectField(value: any, type: IntersectionType, isNonNull: boolean): any {
+    private serializeInputObjectField(value: any, type: IntrospectionInputTypeRef, isNonNull: boolean): any {
         if (type.kind === 'SCALAR') {
             if (value || isNonNull) {
                 return this.serializeScalar(value, type.name);
             }
         } else if (type.kind === 'INPUT_OBJECT') {
             if (value || isNonNull) {
-                const inputObjectType = this.introspectionData.__schema.types.find((item: any) => item.name === name);
-                return this.serializeInputObject(value, inputObjectType.name);
-            }
-        } else if (type.ofType) {
-            const ofType = type.ofType;
-            if (type.kind === 'NON_NULL') {
-                return this.serializeInputObjectField(value, ofType, true);
-            } else if (type.kind === 'LIST') {
-                if (Array.isArray(value)) {
-                    return value.map(item => this.serializeInputObjectField(item, ofType, false))
+                const inputObjectType = this.introspectionData.__schema.types.find((item: any) => item.name === type.name);
+                if (!inputObjectType || inputObjectType.kind !== 'INPUT_OBJECT') {
+                    throw new Error(`inputObjectType: ${type.name}`)
                 }
+                return this.serializeInputObject(value, inputObjectType);
+
+            }
+        } else if (type.kind === 'NON_NULL') {
+            return this.serializeInputObjectField(value, type.ofType, true);
+        } else if (type.kind === 'LIST') {
+            if (Array.isArray(value)) {
+                return value.map(item => this.serializeInputObjectField(item, type.ofType, false))
             }
         }
         return value;
@@ -147,6 +126,46 @@ export class IntrospectionUtil {
             }
         } else if (type.kind === 'NonNullType') {
             return this.serializeFromAST(value, type.type, !hasDefault);
+        }
+        return value;
+    }
+
+    private parseObject(data: Record<string, any>, name: string) {
+        const returnData: any = {};
+        const objectType = this.introspectionData.__schema.types.find((item: any) => item.name === name && item.kind === 'OBJECT');
+
+        if (!objectType || objectType.kind !== 'OBJECT') {
+            throw new Error(`objectType: ${name}`)
+        }
+        for (const field of objectType.fields) {
+            if (field.name in data) {
+                returnData[field.name] = this.parseObjectField(data[field.name], field.type, false);
+            }
+        }
+        return returnData;
+    }
+    private parseObjectField(value: any, type: IntrospectionOutputTypeRef, isNonNull: boolean): any  {
+        if (type.kind === 'SCALAR') {
+            if (value || isNonNull) {
+                return this.parseScalar(value, type.name);
+            }
+        } else if (type.kind === 'OBJECT') {
+            if (value || isNonNull) {
+                return this.parseObject(value, type.name);
+            }
+        } else if (type.kind === 'NON_NULL') {
+            return this.parseObjectField(value, type.ofType, true);
+        } else if (type.kind === 'LIST') {
+            if (Array.isArray(value)) {
+                return value.map(item => this.parseObjectField(item, type.ofType, false))
+            }
+        }
+        return value;
+    }
+    private parseScalar(value: any, name: string) {
+        const scalarItem = this.items.find((item: any) => item.name === name);
+        if (scalarItem) {
+            return scalarItem.parseValue(value);
         }
         return value;
     }

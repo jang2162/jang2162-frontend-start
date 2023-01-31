@@ -1,4 +1,3 @@
-export const revalidate = 1;
 export default function Page() {
 
     return (
