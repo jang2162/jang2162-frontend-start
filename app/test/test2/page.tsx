@@ -10,6 +10,9 @@ export default async function Page() {
 
     return (
         <>
+
+            <div> <span>테스트테스트테스트테스트테스트테스트</span></div>
+
             <button>12</button>
         </>
     );

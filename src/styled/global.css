@@ -5,3 +5,8 @@
 @tailwind components;
 @tailwind utilities;
 
+div {
+  & > span {
+    font-weight: bold;
+  }
+}

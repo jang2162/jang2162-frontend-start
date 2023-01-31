@@ -42,7 +42,6 @@ export class IntrospectionUtil {
                 }
 
                 for(const selection of definition.selectionSet.selections) {
-                    console.log(selection);
                     if (selection.kind === 'Field') {
                         const name = selection.name.value
                         const alias = selection.alias?.value || name
