@@ -18,7 +18,8 @@
     "react-spring": "^9.6.1",
     "recoil": "^0.7.6",
     "set-cookie-parser": "^2.5.1",
-    "styled-jsx": "^5.1.2"
+    "styled-components": "^6.0.0-beta.9",
+    "tailwindcss": "^3.2.4"
   },
   "scripts": {
     "dev": "next dev",
@@ -62,7 +63,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.21",
     "react-scripts": "^5.0.1",
-    "tailwindcss": "^3.2.4",
+    "stailwc": "^0.14.1",
     "typescript": "^4.9.4"
   }
 }
