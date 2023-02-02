@@ -3,7 +3,7 @@ import React from 'react'
 import '@/styled/global.css'
 import ApolloRegistry from '@/registry/apolloRegistry';
 import RecoilRegistry from '@/registry/recoilRegistry';
-import StyledJsxRegistry from '@/registry/styledJsxRegistry';
+import StyledComponentRegistry from '@/registry/styledComponentRegistry';
 import {pretendardFont} from '@/styled/fontFaces/pretendardFontFace';
 
 export default function Layout({ children }: {
@@ -19,9 +19,9 @@ export default function Layout({ children }: {
         <body>
             <RecoilRegistry>
                 <ApolloRegistry>
-                    <StyledJsxRegistry>
+                    <StyledComponentRegistry>
                         {children}
-                    </StyledJsxRegistry>
+                    </StyledComponentRegistry>
                 </ApolloRegistry>
             </RecoilRegistry>
         </body>

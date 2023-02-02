@@ -1,11 +1,10 @@
+'use client'
+
 import React from 'react';
 
-const StyledTest = () => {
-    return (
-        <div>
-            asdasdasdasd
-        </div>
-    );
-};
+import {styled} from 'styled-components';
 
-export default StyledTest;
+export const StyledTest = styled.button`
+    ${tw`text-4xl font-bold underline`}
+    color: ${({color, type}) => color ?? 'red'};
+`
