@@ -1,11 +1,11 @@
-import type { CSSInterpolation } from '@emotion/serialize'
+import { CSSProp} from 'styled-components'
 
 export type TemplateFn<R> = (
   strings: Readonly<TemplateStringsArray>,
   ...values: readonly string[]
 ) => R
 
-export type TwFn = TemplateFn<CSSInterpolation>
+export type TwFn = TemplateFn<CSSProp>
 
 export type TwComponentMap = {
   [K in keyof JSX.IntrinsicElements]: TemplateFn<TwComponent<K>>
@@ -22,7 +22,7 @@ type TwComponentWrapper = <T extends ComponentType<any>>(
 declare module 'react' {
   interface DOMAttributes<T> {
     tw?: string
-    css?: CSSInterpolation
+    css?: CSSProp
   }
 }
 
