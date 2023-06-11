@@ -28,10 +28,4 @@ declare module 'react' {
 
 declare global {
   const tw: TwFn & TwComponentMap & TwComponentWrapper
-
-  namespace JSX {
-    interface IntrinsicAttributes extends React.Attributes {
-      tw?: string
-    }
-  }
 }
