@@ -29,7 +29,7 @@ export default function Page() {
             <h1 className="text-4xl font-black underline ">
                 Hello, Next.js!
             </h1>
-            <StyledTest isRed={true} isActive={false}>
+            <StyledTest >
                 asdasdasd
             </StyledTest>
             <Link href="/test">Test</Link>
