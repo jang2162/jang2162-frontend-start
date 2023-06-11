@@ -6,7 +6,6 @@ const stailwc = require("stailwc/install");
  **/
 const nextConfig = {
     experimental: {
-        appDir: true,
         swcPlugins: [stailwc()],
     },
     env: {
