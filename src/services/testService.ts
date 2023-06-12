@@ -1,9 +1,9 @@
 import {gql} from '@apollo/client';
 
 import {Query, Mutation, Scalars, Maybe} from '@/generated-models';
-import {makeGqlService} from '@/lib/gqlService';
+import {GqlWrapper} from '@/lib/apollo/GqlWrapper';
 
-export const selectNowDates = makeGqlService<{
+export const selectNowDates = new GqlWrapper<{
     nowDate: Query['nowDate']
     nowDateNN: Query['nowDateNN']
     nowDateArr: Query['nowDateArr']
@@ -27,7 +27,7 @@ export const selectNowDates = makeGqlService<{
     }
 `)
 
-export const insertUser = makeGqlService<{
+export const insertUser = new GqlWrapper<{
     aa: Mutation['insertTempUser']
 }, {birth: Scalars['Date'], name: Maybe<Scalars['String']>}>(gql`
     mutation a($birth: Date!, $name: String = "이름없음"){
@@ -35,7 +35,7 @@ export const insertUser = makeGqlService<{
     }
 `)
 
-export const selectUser = makeGqlService<{
+export const selectUser = new GqlWrapper<{
     aad: Query['selectUserById']
 }, {id: Scalars['Int']}>(gql`
     fragment tempUserFields on TempUser {
