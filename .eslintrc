@@ -61,8 +61,8 @@
         }]
     },
    "ignorePatterns": [
-     "ecosystem.config.js",
      "next.config.js",
+     "tailwind.config.js",
      "node_modules/"
    ],
     "settings": {
